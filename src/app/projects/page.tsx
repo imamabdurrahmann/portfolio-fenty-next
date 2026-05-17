@@ -46,7 +46,7 @@ export default function Projects() {
       <div className="projects-grid">
         {projects.map((p, idx) => (
           <Link href={`/projects/${p.id}`} key={idx} className={`project-card reveal ${p.delay}`} data-category={p.category}>
-            <Image src={p.img} alt={p.title} width={800} height={600} className="project-card-image" />
+            <Image src={p.img} alt={p.title} width={800} height={600} className="project-card-image" priority={idx < 4} />
             <div className="project-card-overlay">
               <span className="project-card-category">{p.category}</span>
               <h3 className="project-card-title">{p.title}</h3>

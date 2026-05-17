@@ -645,3 +645,10 @@ body.cv-print-mode {
   .cv-print-btn { display: none !important; }
   .cv-container { padding: 15mm; margin: 0; max-width: 100%; box-shadow: none; }
 }
+
+/* ===== GLOBAL REVEAL ANIMATIONS ===== */
+.reveal { opacity: 0; transform: translateY(15px); animation: fadeUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.2s; }
+.reveal-delay-3 { animation-delay: 0.3s; }
+.reveal-delay-4 { animation-delay: 0.4s; }

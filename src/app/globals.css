@@ -523,7 +523,7 @@ input, textarea { border: none; outline: none; font-family: inherit; cursor: non
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .section { padding: 5rem 3rem; }
+  .section { padding: 7rem 3rem 5rem 3rem; }
   .nav { padding: 1.2rem 2rem; }
   .nav.scrolled { padding: 1rem 2rem; }
   .about-grid { grid-template-columns: 1fr; gap: 3rem; }
@@ -534,7 +534,7 @@ input, textarea { border: none; outline: none; font-family: inherit; cursor: non
 }
 
 @media (max-width: 768px) {
-  .section { padding: 4rem 1.5rem; }
+  .section { padding: 7rem 1.5rem 4rem 1.5rem; }
   .nav { padding: 1rem 1.5rem; }
   .nav-links {
     position: fixed; top: 0; right: -100%; width: 80%; height: 100vh;

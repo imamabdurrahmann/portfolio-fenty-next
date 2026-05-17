@@ -107,6 +107,16 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>Services</Link>
           <Link href="/experience" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('experience') ? 'var(--accent)' : '' }}>Experience</Link>
           <Link href="/contact" className="nav-cta" onClick={() => setNavOpen(false)}>Contact</Link>
+
+          <div className="mobile-nav-footer">
+            <span className="mobile-nav-title">Let's Connect</span>
+            <a href="mailto:fenty.fetria@email.com" style={{ textTransform: 'lowercase', letterSpacing: '0.05em' }}>fenty.fetria@email.com</a>
+            <div className="mobile-nav-socials">
+              <a href="#">Instagram</a>
+              <a href="#">LinkedIn</a>
+              <a href="#">Behance</a>
+            </div>
+          </div>
         </div>
         <button
           className={`nav-hamburger ${navOpen ? "active" : ""}`}

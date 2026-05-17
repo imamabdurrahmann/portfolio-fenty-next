@@ -433,6 +433,16 @@ input, textarea { border: none; outline: none; font-family: inherit; cursor: non
   color: var(--text-secondary); transition: var(--transition);
 }
 .skill-tag:hover { border-color: var(--accent); color: var(--accent); }
+.social-link {
+  width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
+  border: 1px solid var(--border); border-radius: 0; color: var(--text-primary); transition: var(--transition);
+}
+.social-link.whatsapp { color: #25D366; border-color: rgba(37,211,102,0.5); }
+.social-link.whatsapp:hover { background: #25D366; color: #fff; border-color: #25D366; }
+.social-link.linkedin { color: #0A66C2; border-color: rgba(10,102,194,0.5); }
+.social-link.linkedin:hover { background: #0A66C2; color: #fff; border-color: #0A66C2; }
+.social-link.instagram { color: #E1306C; border-color: rgba(225,48,108,0.5); }
+.social-link.instagram:hover { background: #E1306C; color: #fff; border-color: #E1306C; }
 
 /* ===== CONTACT ===== */
 .contact { background: var(--bg-secondary); }

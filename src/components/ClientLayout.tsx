@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import LenisScroll from "./LenisScroll";
+import Preloader from "./Preloader";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const cursorDotRef = useRef<HTMLDivElement>(null);
@@ -81,6 +83,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
+      <LenisScroll />
+      <Preloader />
       <div className="noise-overlay"></div>
       <div className="cursor-dot" ref={cursorDotRef}></div>
       <div className="cursor-outline" ref={cursorOutlineRef}></div>

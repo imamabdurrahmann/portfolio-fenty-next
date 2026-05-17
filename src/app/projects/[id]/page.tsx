@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 
 export default function ProjectDetail() {
@@ -39,7 +40,7 @@ export default function ProjectDetail() {
           </div>
         </div>
 
-        <img src="/img/project-1.png" alt={title} className="reveal reveal-delay-3" style={{ width: '100%', height: '600px', objectFit: 'cover', marginBottom: '4rem' }} />
+        <Image src="/img/project-1.png" alt={title} width={1200} height={800} className="reveal reveal-delay-3" style={{ width: '100%', height: '600px', objectFit: 'cover', marginBottom: '4rem' }} />
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem' }} className="reveal">
           <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 400 }}>The Challenge</h2>

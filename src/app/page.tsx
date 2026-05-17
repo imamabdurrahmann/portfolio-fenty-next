@@ -1,6 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import Link from "next/link";
+import Magnetic from "@/components/Magnetic";
 
 export default function Home() {
   useEffect(() => {
@@ -27,12 +28,16 @@ export default function Home() {
           Creating thoughtful spaces that blend modern aesthetics with functional elegance.
         </p>
         <div className="hero-buttons">
-          <Link href="/projects" className="btn btn-primary">
-            View Projects
-          </Link>
-          <a href="/cv" target="_blank" rel="noreferrer" className="btn btn-outline">
-            Download CV
-          </a>
+          <Magnetic>
+            <Link href="/projects" className="btn btn-primary">
+              View Projects
+            </Link>
+          </Magnetic>
+          <Magnetic>
+            <a href="/cv" target="_blank" rel="noreferrer" className="btn btn-outline">
+              Download CV
+            </a>
+          </Magnetic>
         </div>
       </div>
       <div className="hero-scroll">

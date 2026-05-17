@@ -101,6 +101,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           FENTY<span>.</span>
         </Link>
         <div className={`nav-links ${navOpen ? "open" : ""}`} id="navLinks">
+          <Link href="/" onClick={() => setNavOpen(false)} style={{ color: pathname === '/' ? 'var(--accent)' : '' }}>Home</Link>
           <Link href="/about" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('about') ? 'var(--accent)' : '' }}>About</Link>
           <Link href="/projects" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('projects') ? 'var(--accent)' : '' }}>Projects</Link>
           <Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>Services</Link>

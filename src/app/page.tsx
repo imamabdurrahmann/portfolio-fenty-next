@@ -30,7 +30,7 @@ export default function Home() {
           <Link href="/projects" className="btn btn-primary">
             View Projects
           </Link>
-          <a href="#" className="btn btn-outline">
+          <a href="/cv" target="_blank" rel="noreferrer" className="btn btn-outline">
             Download CV
           </a>
         </div>

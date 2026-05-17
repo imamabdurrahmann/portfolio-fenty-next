@@ -75,6 +75,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   const toggleNav = () => setNavOpen(!navOpen);
 
+  if (pathname === '/cv') {
+    return <>{children}</>;
+  }
+
   return (
     <>
       <div className="noise-overlay"></div>

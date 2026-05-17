@@ -3,8 +3,25 @@ import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 
 export const metadata: Metadata = {
-  title: "Dwi Fenty Fetria — Architect & Designer",
+  title: "Dwi Fenty Fetria | Architect & Interior Designer",
   description: "Portfolio of Dwi Fenty Fetria — Architect and Interior Designer specializing in modern, sustainable, and elegant spaces.",
+  keywords: ["Architect", "Interior Designer", "Dwi Fenty Fetria", "Jakarta", "Architecture Portfolio"],
+  openGraph: {
+    title: "Dwi Fenty Fetria | Architect & Interior Designer",
+    description: "Creating thoughtful spaces that blend modern aesthetics with functional elegance.",
+    url: "https://portfolio-fenty-next.vercel.app",
+    siteName: "Dwi Fenty Fetria Portfolio",
+    images: [
+      {
+        url: "https://portfolio-fenty-next.vercel.app/img/hero.png",
+        width: 1200,
+        height: 630,
+        alt: "Dwi Fenty Fetria Architecture",
+      },
+    ],
+    locale: "id_ID",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

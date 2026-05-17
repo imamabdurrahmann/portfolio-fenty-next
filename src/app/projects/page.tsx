@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Projects() {
   const [activeTab, setActiveTab] = useState("all");
@@ -17,6 +18,15 @@ export default function Projects() {
     });
   };
 
+  const projects = [
+    { id: "rumah-tropis-modern", category: "residential", title: "Rumah Tropis Modern", meta: "Jakarta Selatan — 2024", img: "/img/project-1.png", delay: "" },
+    { id: "urban-living-space", category: "interior", title: "Urban Living Space", meta: "Bandung — 2024", img: "/img/project-2.png", delay: "reveal-delay-1" },
+    { id: "office-tower", category: "commercial", title: "Office Tower Concept", meta: "Surabaya — 2023", img: "/img/project-3.png", delay: "reveal-delay-2" },
+    { id: "minimalist-kitchen", category: "interior", title: "Minimalist Kitchen Design", meta: "Jakarta — 2023", img: "/img/project-4.png", delay: "reveal-delay-3" },
+    { id: "villa-harmoni", category: "residential", title: "Villa Harmoni", meta: "Bali — 2022", img: "/img/project-1.png", delay: "" },
+    { id: "co-working-hub", category: "commercial", title: "Co-Working Hub", meta: "Yogyakarta — 2022", img: "/img/project-3.png", delay: "reveal-delay-1" },
+  ];
+
   return (
     <section className="section projects" id="projects" style={{ minHeight: '100vh' }}>
       <div className="projects-header">
@@ -33,89 +43,21 @@ export default function Projects() {
         </div>
       </div>
       <div className="projects-grid">
-        <div className="project-card reveal" data-category="residential">
-          <img src="/img/project-1.png" alt="Rumah Tropis Modern" className="project-card-image" />
-          <div className="project-card-overlay">
-            <span className="project-card-category">Residential</span>
-            <h3 className="project-card-title">Rumah Tropis Modern</h3>
-            <p className="project-card-meta">Jakarta Selatan — 2024</p>
-          </div>
-          <div className="project-card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" />
-            </svg>
-          </div>
-        </div>
-
-        <div className="project-card reveal reveal-delay-1" data-category="interior">
-          <img src="/img/project-2.png" alt="Urban Living Space" className="project-card-image" />
-          <div className="project-card-overlay">
-            <span className="project-card-category">Interior</span>
-            <h3 className="project-card-title">Urban Living Space</h3>
-            <p className="project-card-meta">Bandung — 2024</p>
-          </div>
-          <div className="project-card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" />
-            </svg>
-          </div>
-        </div>
-
-        <div className="project-card reveal reveal-delay-2" data-category="commercial">
-          <img src="/img/project-3.png" alt="Office Tower Concept" className="project-card-image" />
-          <div className="project-card-overlay">
-            <span className="project-card-category">Commercial</span>
-            <h3 className="project-card-title">Office Tower Concept</h3>
-            <p className="project-card-meta">Surabaya — 2023</p>
-          </div>
-          <div className="project-card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" />
-            </svg>
-          </div>
-        </div>
-
-        <div className="project-card reveal reveal-delay-3" data-category="interior">
-          <img src="/img/project-4.png" alt="Minimalist Kitchen Design" className="project-card-image" />
-          <div className="project-card-overlay">
-            <span className="project-card-category">Interior</span>
-            <h3 className="project-card-title">Minimalist Kitchen Design</h3>
-            <p className="project-card-meta">Jakarta — 2023</p>
-          </div>
-          <div className="project-card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" />
-            </svg>
-          </div>
-        </div>
-
-        <div className="project-card reveal" data-category="residential">
-          <img src="/img/project-1.png" alt="Villa Harmoni" className="project-card-image" />
-          <div className="project-card-overlay">
-            <span className="project-card-category">Residential</span>
-            <h3 className="project-card-title">Villa Harmoni</h3>
-            <p className="project-card-meta">Bali — 2022</p>
-          </div>
-          <div className="project-card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" />
-            </svg>
-          </div>
-        </div>
-
-        <div className="project-card reveal reveal-delay-1" data-category="commercial">
-          <img src="/img/project-3.png" alt="Co-Working Hub" className="project-card-image" />
-          <div className="project-card-overlay">
-            <span className="project-card-category">Commercial</span>
-            <h3 className="project-card-title">Co-Working Hub</h3>
-            <p className="project-card-meta">Yogyakarta — 2022</p>
-          </div>
-          <div className="project-card-arrow">
-            <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
-              <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" />
-            </svg>
-          </div>
-        </div>
+        {projects.map((p, idx) => (
+          <Link href={`/projects/${p.id}`} key={idx} className={`project-card reveal ${p.delay}`} data-category={p.category}>
+            <img src={p.img} alt={p.title} className="project-card-image" />
+            <div className="project-card-overlay">
+              <span className="project-card-category">{p.category}</span>
+              <h3 className="project-card-title">{p.title}</h3>
+              <p className="project-card-meta">{p.meta}</p>
+            </div>
+            <div className="project-card-arrow">
+              <svg viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
+                <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" />
+              </svg>
+            </div>
+          </Link>
+        ))}
       </div>
     </section>
   );

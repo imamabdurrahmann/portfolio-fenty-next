@@ -68,7 +68,7 @@ export default function Contact() {
             </svg>
             <div className="contact-detail-text">
               <span>Location</span>
-              <p>Jakarta, Indonesia</p>
+              <p>Yogyakarta, Indonesia</p>
             </div>
           </div>
 

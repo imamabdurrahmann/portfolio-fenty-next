@@ -32,7 +32,7 @@ export default function CVPage() {
           <div>
             <div className="cv-section">
               <h2>Contact</h2>
-              <div className="cv-contact-item">📍 Jakarta, Indonesia</div>
+              <div className="cv-contact-item">📍 Yogyakarta, Indonesia</div>
               <div className="cv-contact-item">✉️ fenty.fetria@email.com</div>
               <div className="cv-contact-item">📞 +62 853 6654 4375</div>
               <div className="cv-contact-item">🌐 portfolio-fenty.vercel.app</div>

@@ -56,10 +56,11 @@ export default function Preloader() {
             style={{ 
               color: "#fff", fontFamily: "var(--font-heading)", 
               fontSize: "clamp(2rem, 5vw, 4rem)", letterSpacing: "0.05em",
-              marginBottom: "1rem", fontWeight: 300, textTransform: "uppercase"
+              marginBottom: "1rem", fontWeight: 300, textTransform: "uppercase",
+              textAlign: "center"
             }}
           >
-            Fenty Fetria
+            Dwi Fenty Fetria
           </motion.h1>
           <motion.div 
             exit={{ opacity: 0, transition: { duration: 0.3 } }}

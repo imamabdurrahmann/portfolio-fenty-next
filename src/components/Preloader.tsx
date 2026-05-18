@@ -40,15 +40,19 @@ export default function Preloader() {
     <AnimatePresence>
       {loading && (
         <motion.div
-          initial={{ y: 0 }}
-          exit={{ y: "-100vh", transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.1 } }}
+          initial={{ y: 0, borderRadius: "0px" }}
+          exit={{ 
+            y: "-100vh", 
+            borderBottomLeftRadius: "50%",
+            borderBottomRightRadius: "50%",
+            transition: { duration: 0.9, ease: [0.76, 0, 0.24, 1], delay: 0.1 } 
+          }}
           style={{
             position: "fixed",
             top: 0, left: 0, right: 0, bottom: 0,
             background: "#050505", zIndex: 99999,
             display: "flex", justifyContent: "center", alignItems: "center",
-            flexDirection: "column",
-            borderBottomRightRadius: "30vh", borderBottomLeftRadius: "30vh"
+            flexDirection: "column"
           }}
         >
           <motion.h1 

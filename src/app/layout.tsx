@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import { ThemeProvider } from "next-themes";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
 
 export const metadata: Metadata = {
   title: "Dwi Fenty Fetria | Architect & Interior Designer",
@@ -24,21 +26,42 @@ export const metadata: Metadata = {
   },
 };
 
-import { LocaleProvider } from "@/i18n/LocaleProvider";
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Dwi Fenty Fetria",
+    "jobTitle": "Architect & Interior Designer",
+    "url": "https://portfolio-fenty-next.vercel.app",
+    "image": "https://portfolio-fenty-next.vercel.app/img/profile.png",
+    "sameAs": [
+      "https://www.linkedin.com/in/dwi-fenty-fetria-755543407/",
+      "https://www.instagram.com/dwifentyfetria"
+    ],
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Architecture University"
+    }
+  };
+
   return (
     <html lang="id" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <LocaleProvider>
-          <ClientLayout>
-            {children}
-          </ClientLayout>
-        </LocaleProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <LocaleProvider>
+            <ClientLayout>
+              {children}
+            </ClientLayout>
+          </LocaleProvider>
+        </ThemeProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
       </body>
     </html>
   );

@@ -3,6 +3,26 @@
 
 /* ===== CUSTOM PROPERTIES ===== */
 :root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8f8f8;
+  --bg-tertiary: #f0f0f0;
+  --bg-card: #ffffff;
+  --text-primary: #111111;
+  --text-secondary: #444444;
+  --text-muted: #888888;
+  --accent: #C9A96E;
+  --accent-hover: #A8893E;
+  --accent-dark: #8b7132;
+  --border: rgba(0,0,0,0.08);
+  --border-light: rgba(0,0,0,0.05);
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-label: 'Montserrat', sans-serif;
+  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-fast: 0.25s ease;
+}
+
+[data-theme='dark'] {
   --bg-primary: #0A0A0A;
   --bg-secondary: #111111;
   --bg-tertiary: #1A1A1A;
@@ -15,11 +35,6 @@
   --accent-dark: #A8893E;
   --border: rgba(255,255,255,0.06);
   --border-light: rgba(255,255,255,0.12);
-  --font-heading: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', -apple-system, sans-serif;
-  --font-label: 'Montserrat', sans-serif;
-  --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  --transition-fast: 0.25s ease;
 }
 
 /* ===== RESET ===== */

@@ -1,20 +1,30 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LenisScroll from "./LenisScroll";
 import Preloader from "./Preloader";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { motion, useScroll, useSpring } from "framer-motion";
+import { useTheme } from "next-themes";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  const cursorDotRef = useRef<HTMLDivElement>(null);
-  const cursorOutlineRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const [navOpen, setNavOpen] = useState(false);
   const { t, locale, toggleLocale } = useLocale();
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Cursor state
+  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Scroll Progress
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
 
   useEffect(() => {
-    // Loader hanya di-trigger sekali saat initial render (karena Nextjs SPA)
+    setMounted(true);
     const loader = document.getElementById("loader");
     if (loader && !loader.classList.contains("hidden")) {
       setTimeout(() => {
@@ -23,18 +33,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
 
     const moveCursor = (e: MouseEvent) => {
-      if (cursorDotRef.current) {
-        cursorDotRef.current.style.left = `${e.clientX}px`;
-        cursorDotRef.current.style.top = `${e.clientY}px`;
-      }
-      if (cursorOutlineRef.current) {
-        cursorOutlineRef.current.animate(
-          { left: `${e.clientX}px`, top: `${e.clientY}px` },
-          { duration: 500, fill: "forwards" }
-        );
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('a, button, .project-card, .service-card, input, textarea')) {
+        setIsHovered(true);
+      } else {
+        setIsHovered(false);
       }
     };
+
     window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mouseover", handleMouseOver);
 
     const handleScroll = () => {
       const nav = document.getElementById("nav");
@@ -44,12 +56,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   useEffect(() => {
-    // Observer dijalankan ulang setiap ganti halaman
+    // Keep IntersectionObserver for legacy .reveal elements that aren't refactored yet
     const revealElements = document.querySelectorAll(".reveal");
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
@@ -64,17 +77,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       revealObserver.observe(el);
     });
 
-    // Reset hover elements
-    const hoverElements = document.querySelectorAll("a, button, .project-card, .service-card");
-    hoverElements.forEach((el) => {
-      el.addEventListener("mouseenter", () => cursorOutlineRef.current?.classList.add("hover"));
-      el.addEventListener("mouseleave", () => cursorOutlineRef.current?.classList.remove("hover"));
-    });
-
-    // Scroll top automatically handled by Nextjs Link, but ensure clean state
-    return () => {
-      revealObserver.disconnect();
-    }
+    return () => revealObserver.disconnect();
   }, [pathname]);
 
   const toggleNav = () => setNavOpen(!navOpen);
@@ -88,8 +91,36 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       <LenisScroll />
       <Preloader />
       <div className="noise-overlay"></div>
-      <div className="cursor-dot" ref={cursorDotRef}></div>
-      <div className="cursor-outline" ref={cursorOutlineRef}></div>
+      
+      {/* Framer Motion Progress Bar */}
+      <motion.div 
+        className="progress-bar" 
+        style={{ 
+          scaleX, 
+          position: "fixed", top: 0, left: 0, right: 0, height: "3px", 
+          background: "var(--accent)", transformOrigin: "0%", zIndex: 10001 
+        }} 
+      />
+
+      {/* Framer Motion Cursor */}
+      <motion.div 
+        className="cursor-dot"
+        animate={{ x: mousePosition.x, y: mousePosition.y }}
+        transition={{ type: "tween", ease: "linear", duration: 0 }}
+        style={{ translateX: "-50%", translateY: "-50%" }}
+      ></motion.div>
+      <motion.div 
+        className="cursor-outline"
+        animate={{ 
+          x: mousePosition.x, 
+          y: mousePosition.y,
+          scale: isHovered ? 1.5 : 1,
+          backgroundColor: isHovered ? "rgba(201, 169, 110, 0.1)" : "transparent",
+          borderColor: isHovered ? "var(--accent)" : "rgba(201, 169, 110, 0.5)"
+        }}
+        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
+        style={{ translateX: "-50%", translateY: "-50%" }}
+      ></motion.div>
 
       <div className="loader" id="loader">
         <div className="loader-name">
@@ -117,17 +148,36 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>{t("nav.services")}</Link>
           <Link href="/experience" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('experience') ? 'var(--accent)' : '' }}>{t("nav.experience")}</Link>
           <Link href="/contact" className="nav-cta" onClick={() => setNavOpen(false)}>{t("nav.contact")}</Link>
-          <button 
-            onClick={toggleLocale}
-            style={{ 
-              background: 'none', border: '1px solid var(--border)', color: 'var(--text-primary)', 
-              padding: '0.2rem 0.5rem', borderRadius: '4px', cursor: 'pointer',
-              fontFamily: 'var(--font-label)', fontSize: '0.7rem', fontWeight: 600,
-              marginLeft: '1rem'
-            }}
-          >
-            {locale.toUpperCase()}
-          </button>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: '1rem' }}>
+            <button 
+              onClick={toggleLocale}
+              style={{ 
+                background: 'none', border: '1px solid var(--border)', color: 'var(--text-primary)', 
+                padding: '0.2rem 0.5rem', borderRadius: '4px', cursor: 'pointer',
+                fontFamily: 'var(--font-label)', fontSize: '0.7rem', fontWeight: 600
+              }}
+            >
+              {locale.toUpperCase()}
+            </button>
+            {mounted && (
+              <button 
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                style={{ 
+                  background: 'none', border: '1px solid var(--border)', color: 'var(--text-primary)', 
+                  padding: '0.2rem 0.5rem', borderRadius: '4px', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center'
+                }}
+                aria-label="Toggle Theme"
+              >
+                {theme === 'dark' ? (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                ) : (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+                )}
+              </button>
+            )}
+          </div>
 
           <div className="mobile-nav-footer">
             <span className="mobile-nav-title">{t("nav.connect")}</span>

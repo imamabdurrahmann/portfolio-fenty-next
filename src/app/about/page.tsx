@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import Image from "next/image";
 import { useLocale } from "@/i18n/LocaleProvider";
 
 export default function About() {
@@ -41,7 +42,14 @@ export default function About() {
     <section className="section about" id="about" style={{ minHeight: '100vh', background: 'var(--bg-secondary)' }}>
       <div className="about-grid">
         <div className="about-image reveal">
-          <img src="/img/profile.png" alt="Dwi Fenty Fetria" />
+          <Image 
+            src="/img/profile.png" 
+            alt="Dwi Fenty Fetria" 
+            width={600} 
+            height={800} 
+            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
+            priority
+          />
           <div className="about-image-frame"></div>
         </div>
         <div className="about-text">

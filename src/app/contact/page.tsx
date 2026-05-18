@@ -2,10 +2,12 @@
 import { useState } from "react";
 import Magnetic from "@/components/Magnetic";
 import { useLocale } from "@/i18n/LocaleProvider";
+import { motion, useAnimation } from "framer-motion";
 
 export default function Contact() {
   const { t } = useLocale();
   const [status, setStatus] = useState(t("contact.send"));
+  const controls = useAnimation();
 
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,20 +27,19 @@ export default function Contact() {
         body: JSON.stringify(formData),
       });
       if (res.ok) {
-        setStatus(t("contact.sent"));
-        const btn = document.querySelector(".btn-submit") as HTMLElement;
-        if (btn) btn.style.background = "#4CAF50";
+        setStatus("✅ " + t("contact.sent"));
         setTimeout(() => {
           setStatus(t("contact.send"));
-          if (btn) btn.style.background = "";
           form.reset();
         }, 3000);
       } else {
-        setStatus(t("contact.failed"));
+        controls.start({ x: [-10, 10, -10, 10, 0], transition: { duration: 0.4 } });
+        setStatus("❌ " + t("contact.failed"));
         setTimeout(() => setStatus(t("contact.send")), 3000);
       }
     } catch {
-      setStatus(t("contact.error"));
+      controls.start({ x: [-10, 10, -10, 10, 0], transition: { duration: 0.4 } });
+      setStatus("❌ " + t("contact.error"));
       setTimeout(() => setStatus(t("contact.send")), 3000);
     }
   };
@@ -93,7 +94,7 @@ export default function Contact() {
           </div>
         </div>
 
-        <form className="contact-form reveal reveal-delay-1" id="contactForm" onSubmit={submitForm}>
+        <motion.form animate={controls} className="contact-form reveal reveal-delay-1" id="contactForm" onSubmit={submitForm}>
           <div className="form-row">
             <div className="form-group">
               <input type="text" placeholder={t("contact.yourName")} required />
@@ -108,8 +109,8 @@ export default function Contact() {
           <div className="form-group">
             <textarea placeholder={t("contact.tellProject")} rows={5} required></textarea>
           </div>
-          <button type="submit" className="btn btn-submit" disabled={status === t("contact.sending")}>{status}</button>
-        </form>
+          <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} type="submit" className="btn btn-submit" disabled={status === t("contact.sending")} style={{ background: status.includes('✅') ? '#4CAF50' : status.includes('❌') ? '#f44336' : '' }}>{status}</motion.button>
+        </motion.form>
       </div>
     </section>
   );

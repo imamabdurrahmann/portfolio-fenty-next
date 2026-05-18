@@ -652,3 +652,48 @@ body.cv-print-mode {
 .reveal-delay-2 { animation-delay: 0.2s; }
 .reveal-delay-3 { animation-delay: 0.3s; }
 .reveal-delay-4 { animation-delay: 0.4s; }
+
+/* ===== MARQUEE ===== */
+.marquee-container {
+  overflow: hidden;
+  width: 100%;
+  padding: 3rem 0;
+  background: var(--bg-primary);
+  border-top: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+}
+.marquee-content {
+  display: flex;
+  white-space: nowrap;
+}
+.marquee-track {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding-right: 2rem;
+}
+.marquee-item {
+  display: flex;
+  align-items: center;
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 300;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-right: 3rem;
+  transition: color 0.3s ease;
+}
+.marquee-item:hover {
+  color: var(--accent);
+}
+.marquee-dot {
+  width: 12px;
+  height: 12px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  margin-right: 3rem;
+  opacity: 0.5;
+}
+

@@ -4,12 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import LenisScroll from "./LenisScroll";
 import Preloader from "./Preloader";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorOutlineRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const [navOpen, setNavOpen] = useState(false);
+  const { t, locale, toggleLocale } = useLocale();
 
   useEffect(() => {
     // Loader hanya di-trigger sekali saat initial render (karena Nextjs SPA)
@@ -109,15 +111,26 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           FENTY<span>.</span>
         </Link>
         <div className={`nav-links ${navOpen ? "open" : ""}`} id="navLinks">
-          <Link href="/" onClick={() => setNavOpen(false)} style={{ color: pathname === '/' ? 'var(--accent)' : '' }}>Home</Link>
-          <Link href="/about" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('about') ? 'var(--accent)' : '' }}>About</Link>
-          <Link href="/projects" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('projects') ? 'var(--accent)' : '' }}>Projects</Link>
-          <Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>Services</Link>
-          <Link href="/experience" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('experience') ? 'var(--accent)' : '' }}>Experience</Link>
-          <Link href="/contact" className="nav-cta" onClick={() => setNavOpen(false)}>Contact</Link>
+          <Link href="/" onClick={() => setNavOpen(false)} style={{ color: pathname === '/' ? 'var(--accent)' : '' }}>{t("nav.home")}</Link>
+          <Link href="/about" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('about') ? 'var(--accent)' : '' }}>{t("nav.about")}</Link>
+          <Link href="/projects" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('projects') ? 'var(--accent)' : '' }}>{t("nav.projects")}</Link>
+          <Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>{t("nav.services")}</Link>
+          <Link href="/experience" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('experience') ? 'var(--accent)' : '' }}>{t("nav.experience")}</Link>
+          <Link href="/contact" className="nav-cta" onClick={() => setNavOpen(false)}>{t("nav.contact")}</Link>
+          <button 
+            onClick={toggleLocale}
+            style={{ 
+              background: 'none', border: '1px solid var(--border)', color: 'var(--text-primary)', 
+              padding: '0.2rem 0.5rem', borderRadius: '4px', cursor: 'pointer',
+              fontFamily: 'var(--font-label)', fontSize: '0.7rem', fontWeight: 600,
+              marginLeft: '1rem'
+            }}
+          >
+            {locale.toUpperCase()}
+          </button>
 
           <div className="mobile-nav-footer">
-            <span className="mobile-nav-title">Let's Connect</span>
+            <span className="mobile-nav-title">{t("nav.connect")}</span>
             <a href="mailto:fenty.fetria@email.com" style={{ textTransform: 'lowercase', letterSpacing: '0.05em' }}>fenty.fetria@email.com</a>
             <div className="mobile-nav-socials">
               <a href="https://wa.me/6285366544375" target="_blank" rel="noreferrer" aria-label="WhatsApp" style={{ color: '#25D366' }}>
@@ -145,13 +158,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
 
-      {pathname !== '/' && (
+      {pathname !== '/cv' && (
         <footer className="footer">
           <p className="footer-copy">&copy; 2026 Dwi Fenty Fetria. All rights reserved.</p>
           <div className="footer-links">
-            <Link href="/about">About</Link>
-            <Link href="/projects">Projects</Link>
-            <Link href="/contact">Contact</Link>
+            <Link href="/about">{t("nav.about")}</Link>
+            <Link href="/projects">{t("nav.projects")}</Link>
+            <Link href="/contact">{t("nav.contact")}</Link>
           </div>
         </footer>
       )}

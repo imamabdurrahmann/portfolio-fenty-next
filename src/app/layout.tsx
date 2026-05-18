@@ -24,6 +24,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { LocaleProvider } from "@/i18n/LocaleProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,9 +34,11 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning>
       <body suppressHydrationWarning>
-        <ClientLayout>
-          {children}
-        </ClientLayout>
+        <LocaleProvider>
+          <ClientLayout>
+            {children}
+          </ClientLayout>
+        </LocaleProvider>
       </body>
     </html>
   );

@@ -2,9 +2,11 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 export default function Projects() {
   const [activeTab, setActiveTab] = useState("all");
+  const { t } = useLocale();
 
   const handleFilter = (category: string) => {
     setActiveTab(category);
@@ -32,15 +34,15 @@ export default function Projects() {
     <section className="section projects" id="projects" style={{ minHeight: '100vh' }}>
       <div className="projects-header">
         <div>
-          <p className="section-label reveal">Portfolio</p>
-          <h2 className="section-title reveal reveal-delay-1">Selected Works</h2>
+          <p className="section-label reveal">{t("projects.label")}</p>
+          <h2 className="section-title reveal reveal-delay-1">{t("projects.title")}</h2>
           <div className="section-divider reveal reveal-delay-2"></div>
         </div>
         <div className="filter-tabs reveal reveal-delay-2">
-          <button className={`filter-tab ${activeTab === "all" ? "active" : ""}`} onClick={() => handleFilter("all")}>All</button>
-          <button className={`filter-tab ${activeTab === "residential" ? "active" : ""}`} onClick={() => handleFilter("residential")}>Residential</button>
-          <button className={`filter-tab ${activeTab === "commercial" ? "active" : ""}`} onClick={() => handleFilter("commercial")}>Commercial</button>
-          <button className={`filter-tab ${activeTab === "interior" ? "active" : ""}`} onClick={() => handleFilter("interior")}>Interior</button>
+          <button className={`filter-tab ${activeTab === "all" ? "active" : ""}`} onClick={() => handleFilter("all")}>{t("projects.filterAll")}</button>
+          <button className={`filter-tab ${activeTab === "residential" ? "active" : ""}`} onClick={() => handleFilter("residential")}>{t("projects.filterResidential")}</button>
+          <button className={`filter-tab ${activeTab === "commercial" ? "active" : ""}`} onClick={() => handleFilter("commercial")}>{t("projects.filterCommercial")}</button>
+          <button className={`filter-tab ${activeTab === "interior" ? "active" : ""}`} onClick={() => handleFilter("interior")}>{t("projects.filterInterior")}</button>
         </div>
       </div>
       <div className="projects-grid">

@@ -1,11 +1,14 @@
 "use client";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 export default function Experience() {
+  const { t } = useLocale();
+
   return (
     <section className="section" id="experience" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <div className="experience">
-        <p className="section-label reveal">Career Path</p>
-        <h2 className="section-title reveal reveal-delay-1">Experience &amp; Education</h2>
+        <p className="section-label reveal">{t("experience.label")}</p>
+        <h2 className="section-title reveal reveal-delay-1">{t("experience.title")}</h2>
         <div className="section-divider reveal reveal-delay-2"></div>
 
         <div className="timeline">
@@ -33,7 +36,7 @@ export default function Experience() {
         </div>
 
         <div className="skills-section reveal">
-          <p className="section-label">Technical Skills</p>
+          <p className="section-label">{t("experience.techSkills")}</p>
           <div className="skills-grid">
             <span className="skill-tag">AutoCAD</span>
             <span className="skill-tag">SketchUp</span>

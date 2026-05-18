@@ -1,7 +1,10 @@
 "use client";
 import { useEffect } from "react";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 export default function About() {
+  const { t } = useLocale();
+
   useEffect(() => {
     const counters = document.querySelectorAll(".stat-number");
     let counterAnimated = false;
@@ -42,34 +45,32 @@ export default function About() {
           <div className="about-image-frame"></div>
         </div>
         <div className="about-text">
-          <p className="section-label reveal">About Me</p>
+          <p className="section-label reveal">{t("about.label")}</p>
           <h2 className="section-title reveal reveal-delay-1">
-            Designing Spaces<br />That Inspire
+            {t("about.title")}
           </h2>
           <div className="section-divider reveal reveal-delay-2"></div>
           <h3 className="reveal reveal-delay-2">
-            "Architecture is not just about buildings — it's about the stories they tell."
+            {t("about.quote")}
           </h3>
           <p className="reveal reveal-delay-3">
-            Saya Dwi Fenty Fetria, seorang arsitek dan desainer interior yang passionate dalam
-            menciptakan ruang yang tidak hanya indah secara visual, tetapi juga fungsional dan berkelanjutan.
+            {t("about.desc1")}
           </p>
           <p className="reveal reveal-delay-3">
-            Dengan pengalaman dari dunia akademik hingga proyek profesional, saya percaya bahwa
-            setiap desain harus mencerminkan karakter unik penghuninya sekaligus responsif terhadap konteks lingkungannya.
+            {t("about.desc2")}
           </p>
           <div className="about-stats reveal reveal-delay-4">
             <div>
               <div className="stat-number" data-count="5" data-suffix="+">0</div>
-              <div className="stat-label">Years Experience</div>
+              <div className="stat-label">{t("about.yearsExp")}</div>
             </div>
             <div>
               <div className="stat-number" data-count="20" data-suffix="+">0</div>
-              <div className="stat-label">Projects Completed</div>
+              <div className="stat-label">{t("about.projectsCompleted")}</div>
             </div>
             <div>
               <div className="stat-number" data-count="15" data-suffix="+">0</div>
-              <div className="stat-label">Happy Clients</div>
+              <div className="stat-label">{t("about.happyClients")}</div>
             </div>
           </div>
         </div>

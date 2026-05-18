@@ -4,11 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 export default function ProjectDetail() {
   const params = useParams();
   const id = params.id as string;
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const { t } = useLocale();
   
   // Format title from ID (e.g., rumah-tropis-modern -> Rumah Tropis Modern)
   const title = id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -26,28 +28,28 @@ export default function ProjectDetail() {
       <section className="section" style={{ minHeight: '100vh', paddingTop: '150px' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <Link href="/projects" className="btn-outline" style={{ display: 'inline-block', padding: '0.5rem 1.5rem', marginBottom: '3rem', fontSize: '0.7rem' }}>
-            ← Back to Projects
+            {t("projects.backToProjects")}
           </Link>
-          
-          <p className="section-label reveal">Case Study</p>
+
+          <p className="section-label reveal">{t("projects.caseStudy")}</p>
           <h1 className="section-title reveal reveal-delay-1" style={{ fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', marginBottom: '1rem' }}>{title}</h1>
           <div className="section-divider reveal reveal-delay-2"></div>
           
           <div className="reveal reveal-delay-2" style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', marginBottom: '4rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
             <div>
-              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Client</h4>
+              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{t("projects.client")}</h4>
               <p>Private Client</p>
             </div>
             <div>
-              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Location</h4>
+              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{t("projects.location")}</h4>
               <p>Jakarta, Indonesia</p>
             </div>
             <div>
-              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Year</h4>
+              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{t("projects.year")}</h4>
               <p>2024</p>
             </div>
             <div>
-              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Role</h4>
+              <h4 style={{ color: 'var(--text-muted)', fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>{t("projects.role")}</h4>
               <p>Lead Architect</p>
             </div>
           </div>

@@ -160,7 +160,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
       {pathname !== '/cv' && (
         <footer className="footer">
-          <p className="footer-copy">&copy; 2026 Dwi Fenty Fetria. All rights reserved.</p>
+          <p className="footer-copy">&copy; 2026 {t("footer.copyright")}</p>
           <div className="footer-links">
             <Link href="/about">{t("nav.about")}</Link>
             <Link href="/projects">{t("nav.projects")}</Link>

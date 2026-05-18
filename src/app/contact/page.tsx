@@ -1,13 +1,15 @@
 "use client";
 import { useState } from "react";
 import Magnetic from "@/components/Magnetic";
+import { useLocale } from "@/i18n/LocaleProvider";
 
 export default function Contact() {
-  const [status, setStatus] = useState("Send Message");
+  const { t } = useLocale();
+  const [status, setStatus] = useState(t("contact.send"));
 
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus("Sending...");
+    setStatus(t("contact.sending"));
     const form = e.target as HTMLFormElement;
     const formData = {
       name: (form[0] as HTMLInputElement).value,
@@ -23,21 +25,21 @@ export default function Contact() {
         body: JSON.stringify(formData),
       });
       if (res.ok) {
-        setStatus("Message Sent ✓");
+        setStatus(t("contact.sent"));
         const btn = document.querySelector(".btn-submit") as HTMLElement;
         if (btn) btn.style.background = "#4CAF50";
         setTimeout(() => {
-          setStatus("Send Message");
+          setStatus(t("contact.send"));
           if (btn) btn.style.background = "";
           form.reset();
         }, 3000);
       } else {
-        setStatus("Failed. Check API setup.");
-        setTimeout(() => setStatus("Send Message"), 3000);
+        setStatus(t("contact.failed"));
+        setTimeout(() => setStatus(t("contact.send")), 3000);
       }
     } catch {
-      setStatus("Error. Try Again.");
-      setTimeout(() => setStatus("Send Message"), 3000);
+      setStatus(t("contact.error"));
+      setTimeout(() => setStatus(t("contact.send")), 3000);
     }
   };
 
@@ -45,17 +47,17 @@ export default function Contact() {
     <section className="section contact" id="contact" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
       <div className="contact-grid">
         <div className="contact-info">
-          <p className="section-label reveal">Get In Touch</p>
-          <h2 className="section-title reveal reveal-delay-1">Let's Work<br />Together</h2>
+          <p className="section-label reveal">{t("contact.label")}</p>
+          <h2 className="section-title reveal reveal-delay-1">{t("contact.title")}</h2>
           <div className="section-divider reveal reveal-delay-2"></div>
-          <p className="reveal reveal-delay-2">Punya proyek atau ide yang ingin diwujudkan? Saya selalu terbuka untuk diskusi dan kolaborasi baru.</p>
+          <p className="reveal reveal-delay-2">{t("contact.desc")}</p>
 
           <div className="contact-detail reveal reveal-delay-3">
             <svg className="contact-detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
             <div className="contact-detail-text">
-              <span>Email</span>
+              <span>{t("contact.email")}</span>
               <a href="mailto:fenty.fetria@email.com">fenty.fetria@email.com</a>
             </div>
           </div>
@@ -67,7 +69,7 @@ export default function Contact() {
               <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" /><circle cx="12" cy="10" r="3" />
             </svg>
             <div className="contact-detail-text">
-              <span>Location</span>
+              <span>{t("contact.location")}</span>
               <p>Yogyakarta, Indonesia</p>
             </div>
           </div>
@@ -94,19 +96,19 @@ export default function Contact() {
         <form className="contact-form reveal reveal-delay-1" id="contactForm" onSubmit={submitForm}>
           <div className="form-row">
             <div className="form-group">
-              <input type="text" placeholder="Your Name" required />
+              <input type="text" placeholder={t("contact.yourName")} required />
             </div>
             <div className="form-group">
-              <input type="email" placeholder="Your Email" required />
+              <input type="email" placeholder={t("contact.yourEmail")} required />
             </div>
           </div>
           <div className="form-group">
-            <input type="text" placeholder="Subject" />
+            <input type="text" placeholder={t("contact.subject")} />
           </div>
           <div className="form-group">
-            <textarea placeholder="Tell me about your project..." rows={5} required></textarea>
+            <textarea placeholder={t("contact.tellProject")} rows={5} required></textarea>
           </div>
-          <button type="submit" className="btn btn-submit" disabled={status === "Sending..."}>{status}</button>
+          <button type="submit" className="btn btn-submit" disabled={status === t("contact.sending")}>{status}</button>
         </form>
       </div>
     </section>

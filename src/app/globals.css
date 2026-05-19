@@ -22,7 +22,7 @@
   --transition-fast: 0.25s ease;
 }
 
-[data-theme='dark'] {
+.dark {
   --bg-primary: #0A0A0A;
   --bg-secondary: #111111;
   --bg-tertiary: #1A1A1A;

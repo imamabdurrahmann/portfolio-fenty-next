@@ -77,16 +77,14 @@ export default function ProjectDetail() {
             </p>
           </div>
 
-          <div style={{ marginTop: '8rem', borderTop: '1px solid var(--border)', paddingTop: '4rem', textAlign: 'center' }}>
-            <p style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.2em', color: 'var(--text-muted)', marginBottom: '1rem', textTransform: 'uppercase' }}>
-              Next Project
-            </p>
-            <Link href="/projects/urban-living-space" style={{ display: 'inline-block' }}>
-              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 400, color: 'var(--text-primary)', transition: 'color 0.3s' }}>
-                Urban Living Space
-              </h2>
-            </Link>
-          </div>
+          <Link href="/projects/urban-living-space" style={{ display: 'block', marginTop: '6rem', borderTop: '1px solid var(--border)', paddingTop: '3rem', paddingBottom: '1rem', textAlign: 'center', textDecoration: 'none' }}>
+            <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '0.8rem' }}>
+              Next Project →
+            </span>
+            <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 400, color: 'var(--text-primary)', fontStyle: 'italic' }}>
+              Urban Living Space
+            </span>
+          </Link>
         </div>
       </section>
 

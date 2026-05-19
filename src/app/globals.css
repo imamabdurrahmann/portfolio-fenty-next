@@ -428,6 +428,52 @@ input, textarea { border: none; outline: none; font-family: inherit; cursor: non
 }
 .service-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.7; }
 
+/* Premium Services List Layout */
+.services-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-top: 1px solid var(--border);
+}
+.service-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3.5rem 0;
+  border-bottom: 1px solid var(--border);
+  transition: padding-left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), padding-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: none;
+}
+.service-list-item:hover {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+.service-list-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  font-weight: 400;
+  color: var(--text-primary);
+  transition: color 0.4s ease;
+  line-height: 1;
+}
+.service-list-item:hover .service-list-title {
+  color: var(--accent);
+}
+.service-list-desc {
+  max-width: 320px;
+  text-align: right;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.service-list-item:hover .service-list-desc {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 /* ===== EXPERIENCE ===== */
 .experience { max-width: 900px; margin: 0 auto; }
 .timeline { position: relative; margin-top: 3rem; padding-left: 3rem; }

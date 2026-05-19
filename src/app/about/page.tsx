@@ -1,11 +1,18 @@
 "use client";
-import { useEffect } from "react";
+import { useRef, useEffect } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { useLocale } from "@/i18n/LocaleProvider";
 import SplitText from "@/components/SplitText";
 
 export default function About() {
   const { t } = useLocale();
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
   useEffect(() => {
     const counters = document.querySelectorAll(".stat-number");
@@ -41,16 +48,18 @@ export default function About() {
 
   return (
     <section className="section about" id="about" style={{ minHeight: '100vh' }}>
-      <div className="about-grid">
+      <div className="about-grid" ref={containerRef}>
         <div className="about-image reveal">
-          <Image 
-            src="/img/profile.png" 
-            alt="Dwi Fenty Fetria" 
-            width={600} 
-            height={800} 
-            style={{ width: '100%', height: 'auto', objectFit: 'cover' }}
-            priority
-          />
+          <motion.div style={{ y: imageY, width: '100%', height: '100%' }}>
+            <Image 
+              src="/img/profile.png" 
+              alt="Dwi Fenty Fetria" 
+              width={600} 
+              height={800} 
+              style={{ width: '100%', height: '100%', objectFit: 'cover', transform: 'scale(1.2)' }}
+              priority
+            />
+          </motion.div>
           <div className="about-image-frame"></div>
         </div>
         <div className="about-text">

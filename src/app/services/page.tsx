@@ -34,12 +34,10 @@ export default function Services() {
                   {svc.id}
                 </span>
                 <h3 className="service-list-title">
-                  {/* @ts-expect-error dynamic key */}
                   {t(`services.${svc.key}.title`)}
                 </h3>
               </div>
               <p className="service-list-desc">
-                {/* @ts-expect-error dynamic key */}
                 {t(`services.${svc.key}.desc`)}
               </p>
             </HoverImageReveal>

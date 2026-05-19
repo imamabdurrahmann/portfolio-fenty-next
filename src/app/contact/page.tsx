@@ -31,7 +31,7 @@ export default function Contact() {
       markers: [
         { location: [-7.797068, 110.370529], size: 0.08 } // Yogyakarta
       ],
-      onRender: (state) => {
+      onRender: (state: any) => {
         state.phi = phi;
         phi += 0.005;
       },

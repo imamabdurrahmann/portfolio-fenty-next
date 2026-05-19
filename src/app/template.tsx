@@ -1,11 +1,11 @@
 "use client";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 
 export default function Template({ children }: { children: React.ReactNode }) {
   // 5 column slice wipe transition
   const columns = 5;
   
-  const expand = {
+  const expand: Variants = {
     initial: { top: 0 },
     enter: (i: number) => ({ 
       top: "100vh", 

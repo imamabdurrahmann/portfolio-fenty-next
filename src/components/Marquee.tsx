@@ -9,7 +9,11 @@ import {
   useVelocity,
   useAnimationFrame
 } from "framer-motion";
-import { wrap } from "@motionone/utils";
+// Simple wrap utility (replaces @motionone/utils dependency)
+function wrap(min: number, max: number, v: number) {
+  const range = max - min;
+  return ((((v - min) % range) + range) % range) + min;
+}
 
 const skills = [
   "AutoCAD", "SketchUp", "Lumion", "V-Ray", "Enscape",

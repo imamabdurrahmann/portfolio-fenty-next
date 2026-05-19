@@ -76,6 +76,17 @@ export default function ProjectDetail() {
               Proyek {title} ini memiliki tantangan unik dimana ruang yang tersedia sangat terbatas namun klien menginginkan kesan luas, terbuka, dan terintegrasi dengan alam. Pendekatan desain yang kami ambil berfokus pada pemanfaatan pencahayaan alami yang maksimal, sirkulasi udara silang, serta penggunaan material ramah lingkungan.
             </p>
           </div>
+
+          <div style={{ marginTop: '8rem', borderTop: '1px solid var(--border)', paddingTop: '4rem', textAlign: 'center' }} className="reveal">
+            <p style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.2em', color: 'var(--text-muted)', marginBottom: '1rem', textTransform: 'uppercase' }}>
+              Next Project
+            </p>
+            <Link href="/projects/urban-living-space" style={{ display: 'inline-block' }}>
+              <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 400, color: 'var(--text-primary)', transition: 'color 0.3s' }}>
+                Urban Living Space
+              </h2>
+            </Link>
+          </div>
         </div>
       </section>
 

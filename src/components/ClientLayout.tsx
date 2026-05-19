@@ -152,8 +152,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: '1rem' }}>
             <button 
               onClick={toggleLocale}
+              className="nav-btn"
               style={{ 
-                background: 'none', border: '1px solid var(--border)', color: 'var(--text-primary)', 
                 padding: '0.2rem 0.5rem', borderRadius: '4px', cursor: 'pointer',
                 fontFamily: 'var(--font-label)', fontSize: '0.7rem', fontWeight: 600
               }}
@@ -163,8 +163,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {mounted && (
               <button 
                 onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="nav-btn"
                 style={{ 
-                  background: 'none', border: '1px solid var(--border)', color: 'var(--text-primary)', 
                   padding: '0.2rem 0.5rem', borderRadius: '4px', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', justifyContent: 'center'
                 }}

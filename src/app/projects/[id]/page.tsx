@@ -74,7 +74,7 @@ export default function ProjectDetail() {
             style={{ width: '100%', height: '600px', marginBottom: '4rem', overflow: 'hidden', cursor: 'zoom-in', position: 'relative' }}
             onClick={() => setLightboxOpen(true)}
           >
-            <motion.div style={{ y, width: '100%', height: '130%' }}>
+            <motion.div style={{ y, width: '100%', height: '130%' }} layoutId={`project-img-${id}`}>
               <Image 
                 src="/img/project-1.png" 
                 alt={title} 

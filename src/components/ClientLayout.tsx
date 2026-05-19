@@ -120,8 +120,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           x: mousePosition.x, 
           y: mousePosition.y,
           scale: cursorType === 'view' ? 2.5 : (cursorType === 'hover' ? 1.5 : 1),
-          backgroundColor: cursorType !== 'default' ? "rgba(201, 169, 110, 0.1)" : "transparent",
-          borderColor: cursorType !== 'default' ? "var(--accent)" : "rgba(201, 169, 110, 0.5)"
+          backgroundColor: cursorType === 'view' ? "#fff" : (cursorType === 'hover' ? "rgba(255, 255, 255, 0.1)" : "transparent"),
+          borderColor: cursorType !== 'default' ? "#fff" : "rgba(255, 255, 255, 0.5)"
         }}
         transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
         style={{ translateX: "-50%", translateY: "-50%", display: "flex", alignItems: "center", justifyContent: "center" }}
@@ -133,10 +133,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.5 }}
               style={{ 
-                fontSize: '5px', 
-                color: 'var(--accent)', 
+                fontSize: '6px', 
+                color: '#000', 
                 fontFamily: 'var(--font-label)',
-                fontWeight: 600, 
+                fontWeight: 700, 
                 letterSpacing: '1px',
                 position: 'absolute'
               }}

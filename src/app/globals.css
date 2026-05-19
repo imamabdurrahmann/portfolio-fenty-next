@@ -3,10 +3,10 @@
 
 /* ===== CUSTOM PROPERTIES ===== */
 :root {
-  --bg-primary: #f2efe9;
-  --bg-secondary: #e8e4db;
-  --bg-tertiary: #dfddd5;
-  --bg-card: #f9f7f2;
+  --bg-primary: #e8e4db;
+  --bg-secondary: #dfddd5;
+  --bg-tertiary: #d6d3cb;
+  --bg-card: #f2efe9;
   --text-primary: #2c2a25;
   --text-secondary: #4a4741;
   --text-muted: #7a7770;
@@ -15,9 +15,9 @@
   --accent-dark: #635022;
   --border: rgba(44, 42, 37, 0.12);
   --border-light: rgba(44, 42, 37, 0.06);
-  --bg-nav-scrolled: rgba(242, 239, 233, 0.92);
-  --overlay-hero: linear-gradient(180deg, rgba(242,239,233,0.85) 0%, rgba(242,239,233,0.5) 30%, rgba(242,239,233,0.6) 70%, rgba(242,239,233,0.95) 100%);
-  --overlay-card: linear-gradient(to top, rgba(242,239,233,0.95) 0%, transparent 65%);
+  --bg-nav-scrolled: rgba(232, 228, 219, 0.92);
+  --overlay-hero: linear-gradient(180deg, rgba(232,228,219,0.85) 0%, rgba(232,228,219,0.5) 30%, rgba(232,228,219,0.6) 70%, rgba(232,228,219,0.95) 100%);
+  --overlay-card: linear-gradient(to top, rgba(232,228,219,0.95) 0%, transparent 65%);
   --nav-shadow: none;
   --font-heading: 'Playfair Display', Georgia, serif;
   --font-body: 'Inter', -apple-system, sans-serif;
@@ -289,7 +289,6 @@ input, textarea { border: none; outline: none; font-family: inherit; cursor: non
 .reveal-delay-4 { transition-delay: 0.6s; }
 
 /* ===== ABOUT ===== */
-.about { background: var(--bg-secondary); }
 .about-grid {
   display: grid; grid-template-columns: 1fr 1.3fr;
   gap: 5rem; align-items: center; max-width: 1200px; margin: 0 auto;
@@ -398,7 +397,6 @@ input, textarea { border: none; outline: none; font-family: inherit; cursor: non
 .project-card-arrow svg { width: 18px; height: 18px; stroke: var(--text-primary); }
 
 /* ===== SERVICES ===== */
-.services { background: var(--bg-secondary); }
 .services-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 2rem; max-width: 1200px; margin: 3rem auto 0;
@@ -480,7 +478,6 @@ input, textarea { border: none; outline: none; font-family: inherit; cursor: non
 .social-link.instagram:hover { background: #E1306C; color: #fff; border-color: #E1306C; }
 
 /* ===== CONTACT ===== */
-.contact { background: var(--bg-secondary); }
 .contact-grid {
   display: grid; grid-template-columns: 1fr 1fr;
   gap: 5rem; max-width: 1200px; margin: 0 auto;

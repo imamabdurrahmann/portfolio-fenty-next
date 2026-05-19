@@ -5,7 +5,7 @@ export default function Experience() {
   const { t } = useLocale();
 
   return (
-    <section className="section" id="experience" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <section className="section" id="experience" style={{ minHeight: '100vh' }}>
       <div className="experience">
         <p className="section-label reveal">{t("experience.label")}</p>
         <h2 className="section-title reveal reveal-delay-1">{t("experience.title")}</h2>

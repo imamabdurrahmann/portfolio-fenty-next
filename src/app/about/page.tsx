@@ -39,7 +39,7 @@ export default function About() {
   }, []);
 
   return (
-    <section className="section about" id="about" style={{ minHeight: '100vh', background: 'var(--bg-secondary)' }}>
+    <section className="section about" id="about" style={{ minHeight: '100vh' }}>
       <div className="about-grid">
         <div className="about-image reveal">
           <Image 

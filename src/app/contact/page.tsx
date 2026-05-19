@@ -45,7 +45,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="section contact" id="contact" style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
+    <section className="section contact" id="contact" style={{ minHeight: '100vh' }}>
       <div className="contact-grid">
         <div className="contact-info">
           <p className="section-label reveal">{t("contact.label")}</p>

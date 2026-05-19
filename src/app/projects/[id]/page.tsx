@@ -77,7 +77,7 @@ export default function ProjectDetail() {
             </p>
           </div>
 
-          <div style={{ marginTop: '8rem', borderTop: '1px solid var(--border)', paddingTop: '4rem', textAlign: 'center' }} className="reveal">
+          <div style={{ marginTop: '8rem', borderTop: '1px solid var(--border)', paddingTop: '4rem', textAlign: 'center' }}>
             <p style={{ fontFamily: 'var(--font-label)', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '0.2em', color: 'var(--text-muted)', marginBottom: '1rem', textTransform: 'uppercase' }}>
               Next Project
             </p>

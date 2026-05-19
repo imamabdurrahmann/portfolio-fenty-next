@@ -3,6 +3,7 @@ import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
 import { ThemeProvider } from "next-themes";
 import { LocaleProvider } from "@/i18n/LocaleProvider";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Dwi Fenty Fetria | Architect & Interior Designer",
@@ -58,8 +59,10 @@ export default function RootLayout({
             </ClientLayout>
           </LocaleProvider>
         </ThemeProvider>
-        <script
+        <Script
+          id="json-ld"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </body>

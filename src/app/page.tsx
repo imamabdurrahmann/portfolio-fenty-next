@@ -28,9 +28,9 @@ export default function Home() {
         <div className="hero-content">
           <p className="hero-label">{t("hero.label")}</p>
           <SplitText text="Dwi Fenty Fetria" className="hero-title" delay={0.2} />
-          <p className="hero-subtitle">
+          <div className="hero-subtitle">
             <SplitText text={t("hero.subtitle")} delay={0.4} />
-          </p>
+          </div>
           <div className="hero-buttons">
             <Magnetic>
               <Link href="/projects" className="btn btn-primary">

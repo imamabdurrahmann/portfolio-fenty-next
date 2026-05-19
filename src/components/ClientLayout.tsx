@@ -15,6 +15,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const { t, locale, toggleLocale } = useLocale();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [showTopBtn, setShowTopBtn] = useState(false);
 
   // Cursor state
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
@@ -54,6 +55,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     const handleScroll = () => {
       const nav = document.getElementById("nav");
       nav?.classList.toggle("scrolled", window.scrollY > 80);
+      setShowTopBtn(window.scrollY > 500);
     };
     window.addEventListener("scroll", handleScroll);
 
@@ -233,6 +235,22 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         {children}
       </main>
 
+      {pathname !== '/cv' && pathname !== '/contact' && (
+        <section style={{ padding: '6rem 4rem', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
+          <p style={{ fontFamily: 'var(--font-label)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.3em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '1.5rem' }}>
+            {t("nav.contact")}
+          </p>
+          <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.8rem, 4vw, 3rem)', fontWeight: 400, marginBottom: '2rem', lineHeight: 1.3 }}>
+            Punya Proyek?<br />Mari Diskusi.
+          </h2>
+          <Magnetic>
+            <Link href="/contact" className="btn btn-primary" style={{ display: 'inline-block' }}>
+              {t("nav.contact")}
+            </Link>
+          </Magnetic>
+        </section>
+      )}
+
       {pathname !== '/cv' && (
         <footer className="footer">
           <p className="footer-copy">{t("footer.copyright")}</p>
@@ -243,6 +261,31 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         </footer>
       )}
+
+      {/* Back to Top */}
+      <AnimatePresence>
+        {showTopBtn && (
+          <motion.button
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+            style={{
+              position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 900,
+              width: '44px', height: '44px', border: '1px solid var(--border)',
+              background: 'var(--bg-secondary)', color: 'var(--text-primary)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              cursor: 'pointer', transition: 'border-color 0.3s, color 0.3s'
+            }}
+            whileHover={{ borderColor: 'var(--accent)', color: 'var(--accent)' }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 15l-6-6-6 6" />
+            </svg>
+          </motion.button>
+        )}
+      </AnimatePresence>
     </>
   );
 }

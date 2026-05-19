@@ -97,7 +97,8 @@ export default function ProjectDetail() {
               <a
                 href={`/projects/${prevProject.id}`}
                 onClick={(e) => { e.preventDefault(); router.push(`/projects/${prevProject.id}`); }}
-                style={{ fontFamily: 'var(--font-label)', fontSize: '0.6rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', cursor: 'pointer', textDecoration: 'none' }}
+                className="btn-outline"
+                style={{ padding: '0.5rem 1.2rem', fontSize: '0.6rem', display: 'inline-block', textDecoration: 'none' }}
               >
                 ← {prevProject.title}
               </a>
@@ -106,7 +107,8 @@ export default function ProjectDetail() {
               <a
                 href={`/projects/${nextProject.id}`}
                 onClick={(e) => { e.preventDefault(); router.push(`/projects/${nextProject.id}`); }}
-                style={{ fontFamily: 'var(--font-label)', fontSize: '0.6rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', cursor: 'pointer', textDecoration: 'none' }}
+                className="btn-outline"
+                style={{ padding: '0.5rem 1.2rem', fontSize: '0.6rem', display: 'inline-block', textDecoration: 'none' }}
               >
                 {nextProject.title} →
               </a>

@@ -137,7 +137,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <div className="loader-line"></div>
       </div>
 
-      <nav className={`nav ${pathname !== '/' ? 'scrolled' : ''}`} id="nav">
+      <nav className={`nav ${pathname === '/' ? 'is-home' : ''}`} id="nav">
         <Link href="/" className="nav-logo">
           FENTY<span>.</span>
         </Link>

@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import Magnetic from "@/components/Magnetic";
-
+import SplitText from "@/components/SplitText";
 import Marquee from "@/components/Marquee";
 import { useLocale } from "@/i18n/LocaleProvider";
 
@@ -27,11 +27,9 @@ export default function Home() {
         <div className="hero-overlay"></div>
         <div className="hero-content">
           <p className="hero-label">{t("hero.label")}</p>
-          <h1 className="hero-title">
-            Dwi Fenty<br />Fetria
-          </h1>
+          <SplitText text="Dwi Fenty Fetria" className="hero-title" delay={0.2} />
           <p className="hero-subtitle">
-            {t("hero.subtitle")}
+            <SplitText text={t("hero.subtitle")} delay={0.4} />
           </p>
           <div className="hero-buttons">
             <Magnetic>

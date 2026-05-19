@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import LenisScroll from "./LenisScroll";
 import Preloader from "./Preloader";
 import { useLocale } from "@/i18n/LocaleProvider";
-import { motion, useScroll, useSpring } from "framer-motion";
+import { motion, useScroll, useSpring, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
+import Magnetic from "./Magnetic";
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -17,7 +18,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // Cursor state
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
-  const [isHovered, setIsHovered] = useState(false);
+  const [cursorType, setCursorType] = useState<'default'|'hover'|'view'>('default');
 
   // Scroll Progress
   const { scrollYProgress } = useScroll();
@@ -38,10 +39,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
     const handleMouseOver = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      if (target.closest('a, button, .project-card, .service-card, input, textarea')) {
-        setIsHovered(true);
+      if (target.closest('.project-card')) {
+        setCursorType('view');
+      } else if (target.closest('a, button, .service-card, input, textarea')) {
+        setCursorType('hover');
       } else {
-        setIsHovered(false);
+        setCursorType('default');
       }
     };
 
@@ -114,13 +117,33 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         animate={{ 
           x: mousePosition.x, 
           y: mousePosition.y,
-          scale: isHovered ? 1.5 : 1,
-          backgroundColor: isHovered ? "rgba(201, 169, 110, 0.1)" : "transparent",
-          borderColor: isHovered ? "var(--accent)" : "rgba(201, 169, 110, 0.5)"
+          scale: cursorType === 'view' ? 2.5 : (cursorType === 'hover' ? 1.5 : 1),
+          backgroundColor: cursorType !== 'default' ? "rgba(201, 169, 110, 0.1)" : "transparent",
+          borderColor: cursorType !== 'default' ? "var(--accent)" : "rgba(201, 169, 110, 0.5)"
         }}
         transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
-        style={{ translateX: "-50%", translateY: "-50%" }}
-      ></motion.div>
+        style={{ translateX: "-50%", translateY: "-50%", display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
+        <AnimatePresence>
+          {cursorType === 'view' && (
+            <motion.span 
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              style={{ 
+                fontSize: '5px', 
+                color: 'var(--accent)', 
+                fontFamily: 'var(--font-label)',
+                fontWeight: 600, 
+                letterSpacing: '1px',
+                position: 'absolute'
+              }}
+            >
+              VIEW
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
       <div className="loader" id="loader">
         <div className="loader-name">
@@ -147,7 +170,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           <Link href="/projects" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('projects') ? 'var(--accent)' : '' }}>{t("nav.projects")}</Link>
           <Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>{t("nav.services")}</Link>
           <Link href="/experience" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('experience') ? 'var(--accent)' : '' }}>{t("nav.experience")}</Link>
-          <Link href="/contact" className="nav-cta" onClick={() => setNavOpen(false)}>{t("nav.contact")}</Link>
+          <Magnetic>
+            <Link href="/contact" className="nav-cta" onClick={() => setNavOpen(false)} style={{ display: 'inline-block' }}>{t("nav.contact")}</Link>
+          </Magnetic>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: '1rem' }}>
             <button 

@@ -2,6 +2,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import { useLocale } from "@/i18n/LocaleProvider";
+import SplitText from "@/components/SplitText";
 
 export default function About() {
   const { t } = useLocale();
@@ -54,9 +55,7 @@ export default function About() {
         </div>
         <div className="about-text">
           <p className="section-label reveal">{t("about.label")}</p>
-          <h2 className="section-title reveal reveal-delay-1">
-            {t("about.title")}
-          </h2>
+          <SplitText text={t("about.title")} className="section-title" delay={0.2} />
           <div className="section-divider reveal reveal-delay-2"></div>
           <h3 className="reveal reveal-delay-2">
             {t("about.quote")}

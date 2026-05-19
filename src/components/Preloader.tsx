@@ -212,13 +212,13 @@ export default function Preloader() {
                 exit="exit"
                 style={{
                   fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: "clamp(2.2rem, 6vw, 5rem)",
+                  fontSize: "clamp(1.2rem, 4.5vw, 5rem)",
                   fontWeight: 400,
                   color: "#F5F5F0",
-                  letterSpacing: "0.06em",
+                  letterSpacing: "0.04em",
                   display: "inline-block",
                   textTransform: "uppercase",
-                  marginRight: letter === " " ? "0.4em" : "0",
+                  marginRight: letter === " " ? "0.3em" : "0",
                 }}
               >
                 {letter === " " ? "\u00A0" : letter}

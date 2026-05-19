@@ -722,11 +722,23 @@ body.cv-print-mode {
 }
 .cv-print-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
 
+.cv-wrapper {
+  background: #e5e7eb;
+  min-height: 100vh;
+  padding: 3rem 0;
+  font-family: 'Inter', sans-serif;
+}
+
 @media print {
   @page { margin: 0; size: A4; }
   body.cv-print-mode { background: #fff !important; }
-  .cv-print-btn { display: none !important; }
-  .cv-container { padding: 15mm; margin: 0; max-width: 100%; box-shadow: none; }
+  .cv-print-btn, .nav, .footer, .noise-overlay, .cursor-dot, .cursor-outline { display: none !important; }
+  .cv-wrapper { padding: 0 !important; background: #fff !important; min-height: auto !important; }
+  .cv-container { 
+    padding: 15mm; margin: 0; max-width: 100%; 
+    box-shadow: none; min-height: auto; 
+    height: 100%; overflow: hidden; 
+  }
 }
 
 /* ===== GLOBAL REVEAL ANIMATIONS ===== */

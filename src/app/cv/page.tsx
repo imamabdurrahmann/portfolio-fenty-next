@@ -9,7 +9,7 @@ export default function CVPage() {
   }, []);
 
   return (
-    <div style={{ background: '#e5e7eb', minHeight: '100vh', padding: '3rem 0', fontFamily: "'Inter', sans-serif" }}>
+    <div className="cv-wrapper">
       <button 
         className="cv-print-btn" 
         onClick={() => window.print()}

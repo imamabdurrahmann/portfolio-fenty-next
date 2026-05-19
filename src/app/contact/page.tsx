@@ -3,41 +3,30 @@ import { useState } from "react";
 import Magnetic from "@/components/Magnetic";
 import { useLocale } from "@/i18n/LocaleProvider";
 import { motion, useAnimation } from "framer-motion";
-import { useEffect, useRef } from "react";
-import createGlobe from "cobe";
+import { useEffect } from "react";
 
 export default function Contact() {
   const { t } = useLocale();
   const [status, setStatus] = useState(t("contact.send"));
   const controls = useAnimation();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [time, setTime] = useState("");
 
   useEffect(() => {
-    let phi = 0;
-    if (!canvasRef.current) return;
-    const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 2,
-      width: 400 * 2,
-      height: 400 * 2,
-      phi: 0,
-      theta: 0,
-      dark: 1, // Dark theme
-      diffuse: 1.2,
-      mapSamples: 16000,
-      mapBrightness: 4,
-      baseColor: [0.1, 0.1, 0.1], // Dark gray
-      markerColor: [0.78, 0.66, 0.43], // Accent color C9A96E
-      glowColor: [0.05, 0.05, 0.05],
-      markers: [
-        { location: [-7.797068, 110.370529], size: 0.08 } // Yogyakarta
-      ],
-      onRender: (state: any) => {
-        state.phi = phi;
-        phi += 0.005;
-      },
-    } as any);
-
-    return () => globe.destroy();
+    const updateTime = () => {
+      const now = new Date();
+      const formatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Jakarta',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      });
+      setTime(formatter.format(now));
+    };
+    
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const submitForm = async (e: React.FormEvent) => {
@@ -96,16 +85,16 @@ export default function Contact() {
 
 
 
-          <div className="contact-detail reveal reveal-delay-4" style={{ alignItems: 'center', marginTop: '1rem' }}>
-            <div style={{ width: '150px', height: '150px', position: 'relative', overflow: 'hidden', borderRadius: '50%', border: '1px solid var(--border-light)', flexShrink: 0 }}>
-              <canvas
-                ref={canvasRef}
-                style={{ width: 400, height: 400, maxWidth: "100%", aspectRatio: 1, position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', cursor: 'grab' }}
-              />
-            </div>
+          <div className="contact-detail reveal reveal-delay-4" style={{ marginTop: '1.5rem' }}>
+            <svg className="contact-detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
             <div className="contact-detail-text">
-              <span>{t("contact.location")}</span>
-              <p>Yogyakarta, Indonesia<br/><span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>-7.797° S, 110.370° E</span></p>
+              <span>Local Time</span>
+              <p style={{ fontFamily: 'var(--font-heading)', fontSize: '1.2rem', letterSpacing: '1px', marginTop: '0.2rem' }}>
+                {time || "Loading..."} <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>(WIB)</span>
+              </p>
             </div>
           </div>
 

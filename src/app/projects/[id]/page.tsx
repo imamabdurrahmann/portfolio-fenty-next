@@ -2,18 +2,32 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { useLocale } from "@/i18n/LocaleProvider";
 
+const projectOrder = [
+  { id: "rumah-tropis-modern", title: "Rumah Tropis Modern" },
+  { id: "urban-living-space", title: "Urban Living Space" },
+  { id: "office-tower", title: "Office Tower Concept" },
+  { id: "minimalist-kitchen", title: "Minimalist Kitchen Design" },
+  { id: "villa-harmoni", title: "Villa Harmoni" },
+  { id: "co-working-hub", title: "Co-Working Hub" },
+];
+
 export default function ProjectDetail() {
   const params = useParams();
+  const router = useRouter();
   const id = params.id as string;
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const { t } = useLocale();
   
-  // Format title from ID (e.g., rumah-tropis-modern -> Rumah Tropis Modern)
   const title = id.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+  // Find current index and determine prev/next
+  const currentIdx = projectOrder.findIndex(p => p.id === id);
+  const prevProject = currentIdx > 0 ? projectOrder[currentIdx - 1] : null;
+  const nextProject = currentIdx < projectOrder.length - 1 ? projectOrder[currentIdx + 1] : null;
 
   // Parallax setup
   const imageContainerRef = useRef(null);
@@ -77,14 +91,27 @@ export default function ProjectDetail() {
             </p>
           </div>
 
-          <Link href="/projects/urban-living-space" style={{ display: 'block', marginTop: '6rem', borderTop: '1px solid var(--border)', paddingTop: '3rem', paddingBottom: '1rem', textAlign: 'center', textDecoration: 'none' }}>
-            <span style={{ fontFamily: 'var(--font-label)', fontSize: '0.65rem', fontWeight: 600, letterSpacing: '0.2em', color: 'var(--text-muted)', textTransform: 'uppercase', display: 'block', marginBottom: '0.8rem' }}>
-              Next Project →
-            </span>
-            <span style={{ fontFamily: 'var(--font-heading)', fontSize: 'clamp(1.4rem, 3vw, 2.2rem)', fontWeight: 400, color: 'var(--text-primary)', fontStyle: 'italic' }}>
-              Urban Living Space
-            </span>
-          </Link>
+          {/* Prev / Next — super compact */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+            {prevProject ? (
+              <a
+                href={`/projects/${prevProject.id}`}
+                onClick={(e) => { e.preventDefault(); router.push(`/projects/${prevProject.id}`); }}
+                style={{ fontFamily: 'var(--font-label)', fontSize: '0.6rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', cursor: 'pointer', textDecoration: 'none' }}
+              >
+                ← {prevProject.title}
+              </a>
+            ) : <span />}
+            {nextProject ? (
+              <a
+                href={`/projects/${nextProject.id}`}
+                onClick={(e) => { e.preventDefault(); router.push(`/projects/${nextProject.id}`); }}
+                style={{ fontFamily: 'var(--font-label)', fontSize: '0.6rem', fontWeight: 500, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--text-muted)', cursor: 'pointer', textDecoration: 'none' }}
+              >
+                {nextProject.title} →
+              </a>
+            ) : <span />}
+          </div>
         </div>
       </section>
 

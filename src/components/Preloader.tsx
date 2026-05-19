@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, Variants } from "framer-motion";
 
 export default function Preloader() {
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ export default function Preloader() {
   const middleName = "FENTY";
   const lastName = "FETRIA";
 
-  const letterVariants = {
+  const letterVariants: Variants = {
     hidden: { y: 120, opacity: 0, rotateX: 90 },
     visible: (i: number) => ({
       y: 0,

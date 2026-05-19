@@ -722,6 +722,37 @@ body.cv-print-mode {
 }
 .cv-print-btn:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
 
+/* Mobile View Adjustments for CV (Only on Screen) */
+@media screen and (max-width: 768px) {
+  .cv-container {
+    padding: 5vw;
+    margin: 1rem;
+    width: auto;
+    min-height: auto;
+  }
+  .cv-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .cv-header h1 {
+    font-size: 2.5rem;
+  }
+  .cv-header div {
+    text-align: left !important;
+  }
+  .cv-body {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  .cv-print-btn {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 0.85rem;
+  }
+}
+
 .cv-wrapper {
   background: #e5e7eb;
   min-height: 100vh;

@@ -42,7 +42,7 @@ export default function Projects() {
         </motion.div>
       </div>
       <motion.div layout className="projects-grid">
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {filteredProjects.map((p, idx) => (
             <motion.div
               layout
@@ -53,7 +53,7 @@ export default function Projects() {
               transition={{ duration: 0.4, delay: idx * 0.05 }}
             >
               <Link href={`/projects/${p.id}`} className="project-card" style={{ display: 'block' }}>
-                <motion.div layoutId={`project-img-${p.id}`} style={{ width: '100%', height: '400px', position: 'relative' }}>
+                <motion.div layoutId={`project-img-${p.id}`} style={{ width: '100%', height: '100%', minHeight: '400px', position: 'relative' }}>
                   <Image src={p.img} alt={p.title} fill style={{ objectFit: 'cover' }} className="project-card-image" priority={idx < 4} />
                 </motion.div>
                 <div className="project-card-overlay">

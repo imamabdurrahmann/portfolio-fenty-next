@@ -167,11 +167,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           FENTY<span>.</span>
         </Link>
         <div className={`nav-links ${navOpen ? "open" : ""}`} id="navLinks">
-          <Link href="/" onClick={() => setNavOpen(false)} style={{ color: pathname === '/' ? 'var(--accent)' : '' }}>{t("nav.home")}</Link>
-          <Link href="/about" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('about') ? 'var(--accent)' : '' }}>{t("nav.about")}</Link>
-          <Link href="/projects" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('projects') ? 'var(--accent)' : '' }}>{t("nav.projects")}</Link>
-          <Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>{t("nav.services")}</Link>
-          <Link href="/experience" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('experience') ? 'var(--accent)' : '' }}>{t("nav.experience")}</Link>
+          <Magnetic><Link href="/" onClick={() => setNavOpen(false)} style={{ color: pathname === '/' ? 'var(--accent)' : '' }}>{t("nav.home")}</Link></Magnetic>
+          <Magnetic><Link href="/about" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('about') ? 'var(--accent)' : '' }}>{t("nav.about")}</Link></Magnetic>
+          <Magnetic><Link href="/projects" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('projects') ? 'var(--accent)' : '' }}>{t("nav.projects")}</Link></Magnetic>
+          <Magnetic><Link href="/services" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('services') ? 'var(--accent)' : '' }}>{t("nav.services")}</Link></Magnetic>
+          <Magnetic><Link href="/experience" onClick={() => setNavOpen(false)} style={{ color: pathname.includes('experience') ? 'var(--accent)' : '' }}>{t("nav.experience")}</Link></Magnetic>
           <Magnetic>
             <Link href="/contact" className="nav-cta" onClick={() => setNavOpen(false)} style={{ display: 'inline-block' }}>{t("nav.contact")}</Link>
           </Magnetic>
@@ -255,9 +255,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <footer className="footer">
           <p className="footer-copy">{t("footer.copyright")}</p>
           <div className="footer-links">
-            <Link href="/about">{t("nav.about")}</Link>
-            <Link href="/projects">{t("nav.projects")}</Link>
-            <Link href="/contact">{t("nav.contact")}</Link>
+            <Magnetic><Link href="/about">{t("nav.about")}</Link></Magnetic>
+            <Magnetic><Link href="/projects">{t("nav.projects")}</Link></Magnetic>
+            <Magnetic><Link href="/contact">{t("nav.contact")}</Link></Magnetic>
           </div>
         </footer>
       )}

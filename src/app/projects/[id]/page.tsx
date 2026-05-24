@@ -37,6 +37,23 @@ export default function ProjectDetail() {
   });
   const y = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
 
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [activeImage, setActiveImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Fetch all images for this project folder
+    fetch(`/api/project-images?id=${id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.images) {
+          setGalleryImages(data.images);
+        }
+      })
+      .catch(err => console.error("Failed to load images", err));
+  }, [id]);
+
+  const mainImage = projectOrder.find(p => p.id === id)?.img || "/img/project-1.png";
+
   return (
     <>
       <section className="section" style={{ minHeight: '100vh', paddingTop: '150px' }}>
@@ -72,11 +89,14 @@ export default function ProjectDetail() {
             ref={imageContainerRef}
             className="reveal reveal-delay-3" 
             style={{ width: '100%', height: '600px', marginBottom: '4rem', overflow: 'hidden', cursor: 'zoom-in', position: 'relative' }}
-            onClick={() => setLightboxOpen(true)}
+            onClick={() => {
+              setActiveImage(mainImage);
+              setLightboxOpen(true);
+            }}
           >
             <motion.div style={{ y, width: '100%', height: '130%' }} layoutId={`project-img-${id}`}>
               <Image 
-                src={projectOrder.find(p => p.id === id)?.img || "/img/project-1.png"} 
+                src={mainImage} 
                 alt={title} 
                 fill
                 style={{ objectFit: 'cover' }} 
@@ -84,12 +104,47 @@ export default function ProjectDetail() {
             </motion.div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem' }} className="reveal">
-            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 400 }}>The Challenge</h2>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '4rem', marginBottom: '4rem' }} className="reveal">
+            <h2 style={{ fontFamily: 'var(--font-heading)', fontSize: '2.5rem', fontWeight: 400 }}>Project Details</h2>
             <p style={{ color: 'var(--text-secondary)', lineHeight: 1.8 }}>
-              Proyek {title} ini memiliki tantangan unik dimana ruang yang tersedia sangat terbatas namun klien menginginkan kesan luas, terbuka, dan terintegrasi dengan alam. Pendekatan desain yang kami ambil berfokus pada pemanfaatan pencahayaan alami yang maksimal, sirkulasi udara silang, serta penggunaan material ramah lingkungan.
+              Koleksi karya lengkap untuk {title}. Di bawah ini merupakan rincian visual dari proyek atau publikasi terkait. 
+              Setiap gambar merepresentasikan proses desain, hasil akhir, atau detail arsitektural yang telah dikerjakan dengan standar profesional tinggi.
             </p>
           </div>
+
+          {/* GALLERY GRID */}
+          {galleryImages.length > 0 && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '1rem', marginBottom: '4rem' }}>
+              {galleryImages.map((imgName, idx) => {
+                const imgPath = `/img/${id}/${imgName}`;
+                // Skip the main image if it's already shown at the top, or just show all of them. 
+                // We'll show all of them to be safe.
+                return (
+                  <motion.div 
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.5, delay: (idx % 3) * 0.1 }}
+                    style={{ position: 'relative', aspectRatio: '1/1', cursor: 'zoom-in', borderRadius: '1rem', overflow: 'hidden', border: '1px solid var(--border)' }}
+                    onClick={() => {
+                      setActiveImage(imgPath);
+                      setLightboxOpen(true);
+                    }}
+                    className="group"
+                  >
+                    <Image 
+                      src={imgPath} 
+                      alt={`${title} - image ${idx + 1}`} 
+                      fill
+                      style={{ objectFit: 'cover' }} 
+                      className="transition-transform duration-500 group-hover:scale-110"
+                    />
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
 
           {/* Prev / Next — super compact */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '3rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
@@ -119,7 +174,7 @@ export default function ProjectDetail() {
 
       {/* Lightbox Overlay */}
       <AnimatePresence>
-        {lightboxOpen && (
+        {lightboxOpen && activeImage && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -144,7 +199,7 @@ export default function ProjectDetail() {
               style={{ position: 'relative', width: '90vw', height: '90vh' }}
             >
               <Image 
-                src={projectOrder.find(p => p.id === id)?.img || "/img/project-1.png"} 
+                src={activeImage} 
                 alt={title} 
                 fill
                 style={{ objectFit: 'contain' }} 

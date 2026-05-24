@@ -7,12 +7,12 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useLocale } from "@/i18n/LocaleProvider";
 
 const projectOrder = [
-  { id: "rumah-tropis-modern", title: "Rumah Tropis Modern" },
-  { id: "urban-living-space", title: "Urban Living Space" },
-  { id: "office-tower", title: "Office Tower Concept" },
-  { id: "minimalist-kitchen", title: "Minimalist Kitchen Design" },
-  { id: "villa-harmoni", title: "Villa Harmoni" },
-  { id: "co-working-hub", title: "Co-Working Hub" },
+  { id: "proyek-rumah-ibu-yorin", title: "Proyek Rumah Ibu Yorin", img: "/img/proyek-rumah-ibu-yorin/thumbnail.png" },
+  { id: "publikasi-jurnal", title: "Publikasi Jurnal Arsitektur", img: "/img/publikasi-jurnal/thumbnail.png" },
+  { id: "penghargaan-akademik", title: "Penghargaan Akademik (HAKI)", img: "/img/penghargaan-akademik/thumbnail.png" },
+  { id: "proyek-mn-house", title: "MN House", img: "/img/proyek-mn-house/thumbnail.png" },
+  { id: "proyek-rumah-betanto", title: "Rumah Betanto", img: "/img/proyek-rumah-betanto/thumbnail.png" },
+  { id: "proyek-rumah-ibu-fitri", title: "Rumah Ibu Fitri", img: "/img/proyek-rumah-ibu-fitri/thumbnail.png" },
 ];
 
 export default function ProjectDetail() {
@@ -76,7 +76,7 @@ export default function ProjectDetail() {
           >
             <motion.div style={{ y, width: '100%', height: '130%' }} layoutId={`project-img-${id}`}>
               <Image 
-                src="/img/project-1.png" 
+                src={projectOrder.find(p => p.id === id)?.img || "/img/project-1.png"} 
                 alt={title} 
                 fill
                 style={{ objectFit: 'cover' }} 
@@ -144,7 +144,7 @@ export default function ProjectDetail() {
               style={{ position: 'relative', width: '90vw', height: '90vh' }}
             >
               <Image 
-                src="/img/project-1.png" 
+                src={projectOrder.find(p => p.id === id)?.img || "/img/project-1.png"} 
                 alt={title} 
                 fill
                 style={{ objectFit: 'contain' }} 

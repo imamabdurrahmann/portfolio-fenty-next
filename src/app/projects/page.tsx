@@ -14,12 +14,12 @@ export default function Projects() {
   };
 
   const projects = [
-    { id: "rumah-tropis-modern", category: "residential", title: "Rumah Tropis Modern", meta: "Jakarta Selatan — 2024", img: "/img/project-1.png", delay: 0 },
-    { id: "urban-living-space", category: "interior", title: "Urban Living Space", meta: "Bandung — 2024", img: "/img/project-2.png", delay: 0.1 },
-    { id: "office-tower", category: "commercial", title: "Office Tower Concept", meta: "Surabaya — 2023", img: "/img/project-3.png", delay: 0.2 },
-    { id: "minimalist-kitchen", category: "interior", title: "Minimalist Kitchen Design", meta: "Jakarta — 2023", img: "/img/project-4.png", delay: 0.3 },
-    { id: "villa-harmoni", category: "residential", title: "Villa Harmoni", meta: "Bali — 2022", img: "/img/project-1.png", delay: 0 },
-    { id: "co-working-hub", category: "commercial", title: "Co-Working Hub", meta: "Yogyakarta — 2022", img: "/img/project-3.png", delay: 0.1 },
+    { id: "proyek-rumah-ibu-yorin", category: "residential", title: "Proyek Rumah Ibu Yorin", meta: "Residential Architecture", img: "/img/proyek-rumah-ibu-yorin/thumbnail.png", delay: 0 },
+    { id: "publikasi-jurnal", category: "academic", title: "Publikasi Jurnal Arsitektur", meta: "Universitas Muhammadiyah Bengkulu", img: "/img/publikasi-jurnal/thumbnail.png", delay: 0.1 },
+    { id: "penghargaan-akademik", category: "academic", title: "Sertifikat Hak Kekayaan Intelektual", meta: "Penghargaan Akademik (HAKI)", img: "/img/penghargaan-akademik/thumbnail.png", delay: 0.2 },
+    { id: "proyek-mn-house", category: "residential", title: "MN House", meta: "Residential Architecture", img: "/img/proyek-mn-house/thumbnail.png", delay: 0.3 },
+    { id: "proyek-rumah-betanto", category: "residential", title: "Proyek Rumah Betanto", meta: "Residential Architecture", img: "/img/proyek-rumah-betanto/thumbnail.png", delay: 0 },
+    { id: "proyek-rumah-ibu-fitri", category: "residential", title: "Proyek Rumah Ibu Fitri", meta: "Residential Architecture", img: "/img/proyek-rumah-ibu-fitri/thumbnail.png", delay: 0.1 },
   ];
 
   const filteredProjects = projects.filter(
@@ -36,9 +36,8 @@ export default function Projects() {
         </div>
         <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="filter-tabs">
           <button className={`filter-tab ${activeTab === "all" ? "active" : ""}`} onClick={() => handleFilter("all")}>{t("projects.filterAll")}</button>
-          <button className={`filter-tab ${activeTab === "residential" ? "active" : ""}`} onClick={() => handleFilter("residential")}>{t("projects.filterResidential")}</button>
-          <button className={`filter-tab ${activeTab === "commercial" ? "active" : ""}`} onClick={() => handleFilter("commercial")}>{t("projects.filterCommercial")}</button>
-          <button className={`filter-tab ${activeTab === "interior" ? "active" : ""}`} onClick={() => handleFilter("interior")}>{t("projects.filterInterior")}</button>
+          <button className={`filter-tab ${activeTab === "residential" ? "active" : ""}`} onClick={() => handleFilter("residential")}>Residential</button>
+          <button className={`filter-tab ${activeTab === "academic" ? "active" : ""}`} onClick={() => handleFilter("academic")}>Awards & Publications</button>
         </motion.div>
       </div>
       <motion.div layout className="projects-grid">

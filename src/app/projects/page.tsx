@@ -14,7 +14,7 @@ export default function Projects() {
   };
 
   const projects = [
-    { id: "publikasi-jurnal", category: "academic", title: "Publikasi Jurnal Arsitektur", meta: "Universitas Muhammadiyah Bengkulu", img: "/img/publikasi-jurnal/29.png", delay: 0 },
+    { id: "publikasi-jurnal", category: "academic", title: "Publikasi Jurnal Arsitektur", meta: "", img: "/img/publikasi-jurnal/29.png", delay: 0 },
     { id: "penghargaan-akademik", category: "academic", title: "Penghargaan Akademik", meta: "", img: "/img/penghargaan-akademik/19.png", delay: 0.1 },
     { id: "proyek-rumah-ibu-yorin", category: "residential", title: "Proyek Rumah Ibu Yorin", meta: "Residential Architecture", img: "/img/proyek-rumah-ibu-yorin/5.png", delay: 0.2 },
     { id: "proyek-mn-house", category: "residential", title: "MN House", meta: "Residential Architecture", img: "/img/proyek-mn-house/3.png", delay: 0.3 },

@@ -7,9 +7,9 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { useLocale } from "@/i18n/LocaleProvider";
 
 const projectOrder = [
-  { id: "proyek-rumah-ibu-yorin", title: "Proyek Rumah Ibu Yorin", img: "/img/proyek-rumah-ibu-yorin/5.png" },
   { id: "publikasi-jurnal", title: "Publikasi Jurnal Arsitektur", img: "/img/publikasi-jurnal/29.png" },
   { id: "penghargaan-akademik", title: "Penghargaan Akademik", img: "/img/penghargaan-akademik/19.png" },
+  { id: "proyek-rumah-ibu-yorin", title: "Proyek Rumah Ibu Yorin", img: "/img/proyek-rumah-ibu-yorin/5.png" },
   { id: "proyek-mn-house", title: "MN House", img: "/img/proyek-mn-house/3.png" },
   { id: "proyek-rumah-betanto", title: "Rumah Betanto", img: "/img/proyek-rumah-betanto/11.png" },
   { id: "proyek-rumah-ibu-fitri", title: "Rumah Ibu Fitri", img: "/img/proyek-rumah-ibu-fitri/10.png" },

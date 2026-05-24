@@ -52,8 +52,8 @@ export default function Projects() {
               transition={{ duration: 0.4, delay: idx * 0.05 }}
             >
               <Link href={`/projects/${p.id}`} className="project-card" style={{ display: 'block' }}>
-                <motion.div layoutId={`project-img-${p.id}`} style={{ width: '100%', height: '100%', minHeight: '400px', position: 'relative' }}>
-                  <Image src={p.img} alt={p.title} fill style={{ objectFit: 'cover' }} className="project-card-image" priority={idx < 4} />
+                <motion.div layoutId={`project-img-${p.id}`} style={{ width: '100%', aspectRatio: '16/9', position: 'relative' }}>
+                  <Image src={p.img} alt={p.title} fill style={{ objectFit: 'cover', objectPosition: 'center top' }} className="project-card-image" priority={idx < 4} />
                 </motion.div>
                 <div className="project-card-overlay">
                   <span className="project-card-category">{p.category}</span>

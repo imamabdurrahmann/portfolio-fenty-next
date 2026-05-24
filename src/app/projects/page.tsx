@@ -14,12 +14,12 @@ export default function Projects() {
   };
 
   const projects = [
-    { id: "proyek-rumah-ibu-yorin", category: "residential", title: "Proyek Rumah Ibu Yorin", meta: "Residential Architecture", img: "/img/proyek-rumah-ibu-yorin/thumbnail.png", delay: 0 },
-    { id: "publikasi-jurnal", category: "academic", title: "Publikasi Jurnal Arsitektur", meta: "Universitas Muhammadiyah Bengkulu", img: "/img/publikasi-jurnal/thumbnail.png", delay: 0.1 },
-    { id: "penghargaan-akademik", category: "academic", title: "Sertifikat Hak Kekayaan Intelektual", meta: "Penghargaan Akademik (HAKI)", img: "/img/penghargaan-akademik/thumbnail.png", delay: 0.2 },
-    { id: "proyek-mn-house", category: "residential", title: "MN House", meta: "Residential Architecture", img: "/img/proyek-mn-house/thumbnail.png", delay: 0.3 },
-    { id: "proyek-rumah-betanto", category: "residential", title: "Proyek Rumah Betanto", meta: "Residential Architecture", img: "/img/proyek-rumah-betanto/thumbnail.png", delay: 0 },
-    { id: "proyek-rumah-ibu-fitri", category: "residential", title: "Proyek Rumah Ibu Fitri", meta: "Residential Architecture", img: "/img/proyek-rumah-ibu-fitri/thumbnail.png", delay: 0.1 },
+    { id: "proyek-rumah-ibu-yorin", category: "residential", title: "Proyek Rumah Ibu Yorin", meta: "Residential Architecture", img: "/img/proyek-rumah-ibu-yorin/5.png", delay: 0 },
+    { id: "publikasi-jurnal", category: "academic", title: "Publikasi Jurnal Arsitektur", meta: "Universitas Muhammadiyah Bengkulu", img: "/img/publikasi-jurnal/29.png", delay: 0.1 },
+    { id: "penghargaan-akademik", category: "academic", title: "Sertifikat Hak Kekayaan Intelektual", meta: "Penghargaan Akademik (HAKI)", img: "/img/penghargaan-akademik/20.png", delay: 0.2 },
+    { id: "proyek-mn-house", category: "residential", title: "MN House", meta: "Residential Architecture", img: "/img/proyek-mn-house/3.png", delay: 0.3 },
+    { id: "proyek-rumah-betanto", category: "residential", title: "Proyek Rumah Betanto", meta: "Residential Architecture", img: "/img/proyek-rumah-betanto/11.png", delay: 0 },
+    { id: "proyek-rumah-ibu-fitri", category: "residential", title: "Proyek Rumah Ibu Fitri", meta: "Residential Architecture", img: "/img/proyek-rumah-ibu-fitri/10.png", delay: 0.1 },
   ];
 
   const filteredProjects = projects.filter(

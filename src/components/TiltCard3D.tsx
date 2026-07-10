@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { motion, useSpring, useMotionValue, useMotionTemplate } from "framer-motion";
 import Image from "next/image";
 
 interface TiltCard3DProps {
@@ -13,18 +12,10 @@ interface TiltCard3DProps {
 
 export default function TiltCard3D({ title, category, description, imgSrc, badge }: TiltCard3DProps) {
   const cardRef = useRef<HTMLDivElement>(null);
+  const rectRef = useRef<DOMRect | null>(null);
   const [gyroActive, setGyroActive] = useState(false);
   const [supportGyro, setSupportGyro] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
-
-  // Framer Motion Springs for buttery smooth rotation & movement
-  const rotateX = useSpring(0, { stiffness: 120, damping: 20 });
-  const rotateY = useSpring(0, { stiffness: 120, damping: 20 });
-  const glowX = useSpring(50, { stiffness: 150, damping: 25 });
-  const glowY = useSpring(50, { stiffness: 150, damping: 25 });
-  
-  // Motion value for hover state (0 = not hovered/active, 1 = hovered/active)
-  const isHovered = useMotionValue(0);
 
   // Detect iOS and gyroscope availability on mount
   useEffect(() => {
@@ -32,7 +23,6 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
       setIsIOS(ios);
 
-      // Check if device orientation event is supported
       if (window.DeviceOrientationEvent) {
         setSupportGyro(true);
       }
@@ -41,81 +31,115 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
 
   // Desktop Mousemove Handling
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (gyroActive || !cardRef.current) return;
+    if (gyroActive) return;
+    if (!rectRef.current) {
+      if (cardRef.current) {
+        rectRef.current = cardRef.current.getBoundingClientRect();
+      } else {
+        return;
+      }
+    }
 
-    const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    
-    // Position of mouse relative to card top-left
+    const rect = rectRef.current;
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
 
-    // Offset percentage from center (-0.5 to 0.5)
-    const xPct = (mouseX / width) - 0.5;
-    const yPct = (mouseY / height) - 0.5;
+    const xPct = (mouseX / rect.width) - 0.5;
+    const yPct = (mouseY / rect.height) - 0.5;
 
-    // Max rotation in degrees
-    const maxRot = 25;
-    rotateX.set(-yPct * maxRot);
-    rotateY.set(xPct * maxRot);
+    const rx = -yPct * 25;
+    const ry = xPct * 25;
+    const gx = (mouseX / rect.width) * 100;
+    const gy = (mouseY / rect.height) * 100;
 
-    // Glow position (0 to 100%)
-    glowX.set((mouseX / width) * 100);
-    glowY.set((mouseY / height) * 100);
+    const el = cardRef.current;
+    if (el) {
+      el.style.setProperty('--rx', `${rx}deg`);
+      el.style.setProperty('--ry', `${ry}deg`);
+      el.style.setProperty('--gx', `${gx}%`);
+      el.style.setProperty('--gy', `${gy}%`);
+      el.style.setProperty('--tr', '0.08s cubic-bezier(0.25, 1, 0.5, 1)');
+      el.style.setProperty('--o', '0.25');
+    }
   };
 
   const handleMouseEnter = () => {
     if (gyroActive) return;
-    isHovered.set(1);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+      cardRef.current.style.setProperty('--o', '0.25');
+    }
   };
 
   const handleMouseLeave = () => {
     if (gyroActive) return;
-    isHovered.set(0);
-    rotateX.set(0);
-    rotateY.set(0);
-    glowX.set(50);
-    glowY.set(50);
+    const el = cardRef.current;
+    if (el) {
+      el.style.setProperty('--rx', '0deg');
+      el.style.setProperty('--ry', '0deg');
+      el.style.setProperty('--gx', '50%');
+      el.style.setProperty('--gy', '50%');
+      el.style.setProperty('--tr', '0.6s cubic-bezier(0.25, 1, 0.3, 1)');
+      el.style.setProperty('--o', '0');
+    }
+    rectRef.current = null;
   };
 
   // Mobile Touch Handling (Drag to Tilt fallback)
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (gyroActive || !cardRef.current || e.touches.length === 0) return;
+    if (gyroActive || e.touches.length === 0) return;
+    if (!rectRef.current) {
+      if (cardRef.current) {
+        rectRef.current = cardRef.current.getBoundingClientRect();
+      } else {
+        return;
+      }
+    }
 
     const touch = e.touches[0];
-    const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-
-    // Position of touch relative to card top-left
+    const rect = rectRef.current;
     const touchX = touch.clientX - rect.left;
     const touchY = touch.clientY - rect.top;
 
-    // Constrain offset inside boundary (-0.5 to 0.5)
-    const xPct = Math.max(-0.5, Math.min(0.5, (touchX / width) - 0.5));
-    const yPct = Math.max(-0.5, Math.min(0.5, (touchY / height) - 0.5));
+    const xPct = Math.max(-0.5, Math.min(0.5, (touchX / rect.width) - 0.5));
+    const yPct = Math.max(-0.5, Math.min(0.5, (touchY / rect.height) - 0.5));
 
-    const maxRot = 25;
-    rotateX.set(-yPct * maxRot);
-    rotateY.set(xPct * maxRot);
+    const rx = -yPct * 25;
+    const ry = xPct * 25;
+    const gx = ((touchX / rect.width) * 100);
+    const gy = ((touchY / rect.height) * 100);
 
-    glowX.set((touchX / width) * 100);
-    glowY.set((touchY / height) * 100);
+    const el = cardRef.current;
+    if (el) {
+      el.style.setProperty('--rx', `${rx}deg`);
+      el.style.setProperty('--ry', `${ry}deg`);
+      el.style.setProperty('--gx', `${gx}%`);
+      el.style.setProperty('--gy', `${gy}%`);
+      el.style.setProperty('--tr', '0.08s cubic-bezier(0.25, 1, 0.5, 1)');
+      el.style.setProperty('--o', '0.25');
+    }
   };
 
   const handleTouchStart = () => {
     if (gyroActive) return;
-    isHovered.set(1);
+    if (cardRef.current) {
+      rectRef.current = cardRef.current.getBoundingClientRect();
+      cardRef.current.style.setProperty('--o', '0.25');
+    }
   };
 
   const handleTouchEnd = () => {
     if (gyroActive) return;
-    isHovered.set(0);
-    rotateX.set(0);
-    rotateY.set(0);
-    glowX.set(50);
-    glowY.set(50);
+    const el = cardRef.current;
+    if (el) {
+      el.style.setProperty('--rx', '0deg');
+      el.style.setProperty('--ry', '0deg');
+      el.style.setProperty('--gx', '50%');
+      el.style.setProperty('--gy', '50%');
+      el.style.setProperty('--tr', '0.6s cubic-bezier(0.25, 1, 0.3, 1)');
+      el.style.setProperty('--o', '0');
+    }
+    rectRef.current = null;
   };
 
   // Gyroscope Sensor orientation hook
@@ -126,40 +150,50 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       let { beta, gamma } = e;
       if (beta === null || gamma === null) return;
 
-      // Normalization: Beta (front-back tilt, usually 45deg when holding phone)
-      // Gamma (left-right tilt, usually 0deg)
       const targetBeta = 50; // default holding angle
-      const betaDiff = Math.max(-25, Math.min(25, beta - targetBeta)); // clamp to [-25, 25]
-      const gammaDiff = Math.max(-25, Math.min(25, gamma)); // clamp to [-25, 25]
+      const betaDiff = Math.max(-25, Math.min(25, beta - targetBeta));
+      const gammaDiff = Math.max(-25, Math.min(25, gamma));
 
-      const maxRot = 25;
-      // Map gyro pitch/roll to rotateX & rotateY
-      rotateX.set(-(betaDiff / 25) * maxRot);
-      rotateY.set((gammaDiff / 25) * maxRot);
+      const rx = -(betaDiff / 25) * 25;
+      const ry = (gammaDiff / 25) * 25;
+      const gx = 50 + (gammaDiff / 25) * 50;
+      const gy = 50 + (betaDiff / 25) * 50;
 
-      // Glow moves corresponding to tilt
-      glowX.set(50 + (gammaDiff / 25) * 50);
-      glowY.set(50 + (betaDiff / 25) * 50);
+      const el = cardRef.current;
+      if (el) {
+        el.style.setProperty('--rx', `${rx}deg`);
+        el.style.setProperty('--ry', `${ry}deg`);
+        el.style.setProperty('--gx', `${gx}%`);
+        el.style.setProperty('--gy', `${gy}%`);
+        // Smooth transition for gyroscope to feel organic
+        el.style.setProperty('--tr', '0.15s cubic-bezier(0.25, 1, 0.5, 1)');
+        el.style.setProperty('--o', '0.25');
+      }
     };
 
-    // Force glow overlay on during gyro
-    isHovered.set(1);
+    const el = cardRef.current;
+    if (el) {
+      el.style.setProperty('--o', '0.25');
+    }
 
     window.addEventListener("deviceorientation", handleOrientation);
     return () => {
       window.removeEventListener("deviceorientation", handleOrientation);
     };
-  }, [gyroActive, rotateX, rotateY, glowX, glowY, isHovered]);
+  }, [gyroActive]);
 
-  // Requesting Gyroscope permission (specially for iOS Safari)
   const toggleGyroscope = async () => {
+    const el = cardRef.current;
     if (gyroActive) {
       setGyroActive(false);
-      rotateX.set(0);
-      rotateY.set(0);
-      glowX.set(50);
-      glowY.set(50);
-      isHovered.set(0);
+      if (el) {
+        el.style.setProperty('--rx', '0deg');
+        el.style.setProperty('--ry', '0deg');
+        el.style.setProperty('--gx', '50%');
+        el.style.setProperty('--gy', '50%');
+        el.style.setProperty('--tr', '0.6s cubic-bezier(0.25, 1, 0.3, 1)');
+        el.style.setProperty('--o', '0');
+      }
       return;
     }
 
@@ -182,13 +216,9 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
         alert("Gagal mengaktifkan giroskop. Gunakan interaksi touch-drag.");
       }
     } else {
-      // Android / browsers without restriction
       setGyroActive(true);
     }
   };
-
-  // Radial gradient glow template
-  const glowGradient = useMotionTemplate`radial-gradient(circle 300px at ${glowX}% ${glowY}%, rgba(201, 169, 110, 0.25) 0%, rgba(201, 169, 110, 0.05) 50%, transparent 100%)`;
 
   return (
     <div className="tilt-card-wrapper" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px" }}>
@@ -200,7 +230,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
           height: "440px",
         }}
       >
-        <motion.div
+        <div
           ref={cardRef}
           onMouseMove={handleMouseMove}
           onMouseEnter={handleMouseEnter}
@@ -211,8 +241,8 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
           style={{
             width: "100%",
             height: "100%",
-            rotateX,
-            rotateY,
+            transform: "rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))",
+            transition: "transform var(--tr, 0.6s cubic-bezier(0.25, 1, 0.3, 1))",
             transformStyle: "preserve-3d",
             position: "relative",
             borderRadius: "24px",
@@ -226,18 +256,20 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
             justifyContent: "space-between",
             padding: "24px",
             color: "#F5F5F0",
+            willChange: "transform",
           }}
         >
-          {/* Layer 0: Glow effect (follows mouse/gyro) */}
-          <motion.div
+          {/* Layer 0: Glow effect (follows mouse/gyro using CSS custom variables) */}
+          <div
             style={{
               position: "absolute",
               inset: 0,
               borderRadius: "inherit",
-              background: glowGradient,
-              opacity: isHovered,
+              background: "radial-gradient(circle 300px at var(--gx, 50%) var(--gy, 50%), rgba(201, 169, 110, var(--o, 0)) 0%, rgba(201, 169, 110, calc(var(--o, 0) * 0.2)) 50%, transparent 100%)",
+              transition: "opacity 0.3s ease",
               pointerEvents: "none",
               zIndex: 1,
+              willChange: "transform, opacity",
             }}
           />
 
@@ -345,10 +377,10 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
               {description}
             </p>
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Mobile Control Info (only visible on mobile/touch interfaces or when giroskop is supported) */}
+      {/* Mobile Control Info */}
       {supportGyro && (
         <div style={{ marginTop: "10px", textAlign: "center", zIndex: 10 }}>
           <button

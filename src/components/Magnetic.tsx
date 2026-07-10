@@ -8,6 +8,9 @@ export default function Magnetic({ children }: { children: React.ReactElement })
 
   const handleMouse = (e: React.MouseEvent) => {
     if (!ref.current) return;
+    // Skip magnetic effect on touch devices to prevent buttons getting stuck
+    if (window.matchMedia('(pointer: coarse)').matches) return;
+
     const { clientX, clientY } = e;
     const { height, width, left, top } = ref.current.getBoundingClientRect();
     const middleX = clientX - (left + width / 2);

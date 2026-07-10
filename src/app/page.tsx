@@ -10,6 +10,9 @@ export default function Home() {
   const { t } = useLocale();
   
   useEffect(() => {
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    if (isTouch) return; // Disable scroll parallax on touch devices to ensure lag-free scrolling
+
     const handleScroll = () => {
       const heroBg = document.querySelector(".hero-bg") as HTMLElement;
       if (heroBg) {

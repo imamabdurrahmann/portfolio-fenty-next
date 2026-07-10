@@ -17,6 +17,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
   const [gyroActive, setGyroActive] = useState(false);
   const [supportGyro, setSupportGyro] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const isTouchingRef = useRef(false);
 
   // requestAnimationFrame Throttle Variables
   const rafId = useRef<number | null>(null);
@@ -67,7 +68,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
 
   // Desktop Mousemove Handling
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (gyroActive) return;
+    if (gyroActive || isTouchingRef.current) return;
     if (!rectRef.current) {
       if (cardRef.current) {
         rectRef.current = cardRef.current.getBoundingClientRect();
@@ -93,7 +94,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
   };
 
   const handleMouseEnter = () => {
-    if (gyroActive) return;
+    if (gyroActive || isTouchingRef.current) return;
     if (cardRef.current) {
       rectRef.current = cardRef.current.getBoundingClientRect();
     }
@@ -102,7 +103,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
   };
 
   const handleMouseLeave = () => {
-    if (gyroActive) return;
+    if (gyroActive || isTouchingRef.current) return;
     rxRef.current = 0;
     ryRef.current = 0;
     gxRef.current = 50;
@@ -116,6 +117,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
   // Mobile Touch Handling (Drag to Tilt fallback)
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (gyroActive || e.touches.length === 0) return;
+    isTouchingRef.current = true;
     if (!rectRef.current) {
       if (cardRef.current) {
         rectRef.current = cardRef.current.getBoundingClientRect();
@@ -143,6 +145,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
 
   const handleTouchStart = () => {
     if (gyroActive) return;
+    isTouchingRef.current = true;
     if (cardRef.current) {
       rectRef.current = cardRef.current.getBoundingClientRect();
     }
@@ -160,6 +163,11 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
     oRef.current = '0';
     rectRef.current = null;
     scheduleUpdate();
+    
+    // Tiny delay before resetting touch flag to avoid simulated mouseover conflicts
+    setTimeout(() => {
+      isTouchingRef.current = false;
+    }, 100);
   };
 
   // Gyroscope Sensor orientation hook
@@ -323,6 +331,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
             padding: "24px",
             color: "#F5F5F0",
             willChange: "transform",
+            touchAction: "none"
           }}
         >
           {/* Layer 0: Glow effect (follows mouse/gyro using CSS custom variables) */}

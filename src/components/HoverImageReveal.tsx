@@ -6,6 +6,7 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
   const ref = useRef<HTMLDivElement>(null);
   const rectRef = useRef<DOMRect | null>(null);
   const rafId = useRef<number | null>(null);
+  const isTouchingRef = useRef(false);
 
   // Cache coordinates to write to DOM on next animation frame
   const mxRef = useRef(0);
@@ -61,13 +62,15 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!rectRef.current) return;
+    // Ignore simulated mouse events on touch screens
+    if (isTouchingRef.current || !rectRef.current) return;
     mxRef.current = e.clientX - rectRef.current.left;
     myRef.current = e.clientY - rectRef.current.top;
     scheduleUpdate();
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    isTouchingRef.current = true;
     if (ref.current) {
       rectRef.current = ref.current.getBoundingClientRect();
       ref.current.style.setProperty('--o', '1');
@@ -95,6 +98,10 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
       cancelAnimationFrame(rafId.current);
       rafId.current = null;
     }
+    // Small delay to ensure simulated mousemove events are finished before resetting flag
+    setTimeout(() => {
+      isTouchingRef.current = false;
+    }, 100);
   };
 
   const updateTouchCoords = (e: React.TouchEvent) => {
@@ -116,7 +123,7 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
-      style={{ position: "relative" }}
+      style={{ position: "relative", touchAction: "pan-y" }}
     >
       {children}
       <div

@@ -60,7 +60,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       el.style.setProperty('--ry', `${ry}deg`);
       el.style.setProperty('--gx', `${gx}%`);
       el.style.setProperty('--gy', `${gy}%`);
-      el.style.setProperty('--tr', '0.08s cubic-bezier(0.25, 1, 0.5, 1)');
+      el.style.setProperty('--tr', '0.35s cubic-bezier(0.16, 1, 0.3, 1)');
       el.style.setProperty('--o', '0.25');
     }
   };
@@ -81,7 +81,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       el.style.setProperty('--ry', '0deg');
       el.style.setProperty('--gx', '50%');
       el.style.setProperty('--gy', '50%');
-      el.style.setProperty('--tr', '0.6s cubic-bezier(0.25, 1, 0.3, 1)');
+      el.style.setProperty('--tr', '0.8s cubic-bezier(0.16, 1, 0.3, 1)');
       el.style.setProperty('--o', '0');
     }
     rectRef.current = null;
@@ -117,7 +117,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       el.style.setProperty('--ry', `${ry}deg`);
       el.style.setProperty('--gx', `${gx}%`);
       el.style.setProperty('--gy', `${gy}%`);
-      el.style.setProperty('--tr', '0.08s cubic-bezier(0.25, 1, 0.5, 1)');
+      el.style.setProperty('--tr', '0.35s cubic-bezier(0.16, 1, 0.3, 1)');
       el.style.setProperty('--o', '0.25');
     }
   };
@@ -138,7 +138,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       el.style.setProperty('--ry', '0deg');
       el.style.setProperty('--gx', '50%');
       el.style.setProperty('--gy', '50%');
-      el.style.setProperty('--tr', '0.6s cubic-bezier(0.25, 1, 0.3, 1)');
+      el.style.setProperty('--tr', '0.8s cubic-bezier(0.16, 1, 0.3, 1)');
       el.style.setProperty('--o', '0');
     }
     rectRef.current = null;

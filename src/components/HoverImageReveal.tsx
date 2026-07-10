@@ -11,8 +11,8 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
       rectRef.current = ref.current.getBoundingClientRect();
       ref.current.style.setProperty('--o', '1');
       ref.current.style.setProperty('--s', '1');
-      ref.current.style.setProperty('--tr', '0.08s cubic-bezier(0.25, 1, 0.5, 1)');
-      ref.current.style.setProperty('--tro', '0.2s ease-out');
+      ref.current.style.setProperty('--tr', '0.35s cubic-bezier(0.16, 1, 0.3, 1)');
+      ref.current.style.setProperty('--tro', '0.3s ease-out');
     }
   };
 
@@ -21,8 +21,8 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
     if (el) {
       el.style.setProperty('--o', '0');
       el.style.setProperty('--s', '0.8');
-      el.style.setProperty('--tr', '0.3s cubic-bezier(0.25, 1, 0.5, 1)');
-      el.style.setProperty('--tro', '0.2s ease-in');
+      el.style.setProperty('--tr', '0.6s cubic-bezier(0.16, 1, 0.3, 1)');
+      el.style.setProperty('--tro', '0.3s ease-in');
     }
     rectRef.current = null;
   };
@@ -43,8 +43,8 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
       rectRef.current = ref.current.getBoundingClientRect();
       ref.current.style.setProperty('--o', '1');
       ref.current.style.setProperty('--s', '1');
-      ref.current.style.setProperty('--tr', '0.08s cubic-bezier(0.25, 1, 0.5, 1)');
-      ref.current.style.setProperty('--tro', '0.2s ease-out');
+      ref.current.style.setProperty('--tr', '0.35s cubic-bezier(0.16, 1, 0.3, 1)');
+      ref.current.style.setProperty('--tro', '0.3s ease-out');
     }
     updateTouchCoords(e);
   };
@@ -58,8 +58,8 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
     if (el) {
       el.style.setProperty('--o', '0');
       el.style.setProperty('--s', '0.8');
-      el.style.setProperty('--tr', '0.3s cubic-bezier(0.25, 1, 0.5, 1)');
-      el.style.setProperty('--tro', '0.2s ease-in');
+      el.style.setProperty('--tr', '0.6s cubic-bezier(0.16, 1, 0.3, 1)');
+      el.style.setProperty('--tro', '0.3s ease-in');
     }
     rectRef.current = null;
   };

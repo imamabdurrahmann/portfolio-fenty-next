@@ -18,6 +18,34 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
   const [supportGyro, setSupportGyro] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
+  // requestAnimationFrame Throttle Variables
+  const rafId = useRef<number | null>(null);
+  const rxRef = useRef(0);
+  const ryRef = useRef(0);
+  const gxRef = useRef(50);
+  const gyRef = useRef(50);
+  const trRef = useRef("0.6s cubic-bezier(0.25, 1, 0.3, 1)");
+  const oRef = useRef("0");
+
+  const updateDOM = () => {
+    const el = cardRef.current;
+    if (el) {
+      el.style.setProperty('--rx', `${rxRef.current}deg`);
+      el.style.setProperty('--ry', `${ryRef.current}deg`);
+      el.style.setProperty('--gx', `${gxRef.current}%`);
+      el.style.setProperty('--gy', `${gyRef.current}%`);
+      el.style.setProperty('--tr', trRef.current);
+      el.style.setProperty('--o', oRef.current);
+    }
+    rafId.current = null;
+  };
+
+  const scheduleUpdate = () => {
+    if (rafId.current === null) {
+      rafId.current = requestAnimationFrame(updateDOM);
+    }
+  };
+
   // Detect iOS and gyroscope availability on mount (only for touch-capable devices)
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -29,6 +57,12 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
         setSupportGyro(true);
       }
     }
+
+    return () => {
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
   }, []);
 
   // Desktop Mousemove Handling
@@ -49,42 +83,34 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
     const xPct = (mouseX / rect.width) - 0.5;
     const yPct = (mouseY / rect.height) - 0.5;
 
-    const rx = -yPct * 25;
-    const ry = xPct * 25;
-    const gx = (mouseX / rect.width) * 100;
-    const gy = (mouseY / rect.height) * 100;
-
-    const el = cardRef.current;
-    if (el) {
-      el.style.setProperty('--rx', `${rx}deg`);
-      el.style.setProperty('--ry', `${ry}deg`);
-      el.style.setProperty('--gx', `${gx}%`);
-      el.style.setProperty('--gy', `${gy}%`);
-      el.style.setProperty('--tr', '0.35s cubic-bezier(0.16, 1, 0.3, 1)');
-      el.style.setProperty('--o', '0.25');
-    }
+    rxRef.current = -yPct * 25;
+    ryRef.current = xPct * 25;
+    gxRef.current = (mouseX / rect.width) * 100;
+    gyRef.current = (mouseY / rect.height) * 100;
+    trRef.current = '0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+    oRef.current = '0.25';
+    scheduleUpdate();
   };
 
   const handleMouseEnter = () => {
     if (gyroActive) return;
     if (cardRef.current) {
       rectRef.current = cardRef.current.getBoundingClientRect();
-      cardRef.current.style.setProperty('--o', '0.25');
     }
+    oRef.current = '0.25';
+    scheduleUpdate();
   };
 
   const handleMouseLeave = () => {
     if (gyroActive) return;
-    const el = cardRef.current;
-    if (el) {
-      el.style.setProperty('--rx', '0deg');
-      el.style.setProperty('--ry', '0deg');
-      el.style.setProperty('--gx', '50%');
-      el.style.setProperty('--gy', '50%');
-      el.style.setProperty('--tr', '0.8s cubic-bezier(0.16, 1, 0.3, 1)');
-      el.style.setProperty('--o', '0');
-    }
+    rxRef.current = 0;
+    ryRef.current = 0;
+    gxRef.current = 50;
+    gyRef.current = 50;
+    trRef.current = '0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+    oRef.current = '0';
     rectRef.current = null;
+    scheduleUpdate();
   };
 
   // Mobile Touch Handling (Drag to Tilt fallback)
@@ -106,42 +132,34 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
     const xPct = Math.max(-0.5, Math.min(0.5, (touchX / rect.width) - 0.5));
     const yPct = Math.max(-0.5, Math.min(0.5, (touchY / rect.height) - 0.5));
 
-    const rx = -yPct * 25;
-    const ry = xPct * 25;
-    const gx = ((touchX / rect.width) * 100);
-    const gy = ((touchY / rect.height) * 100);
-
-    const el = cardRef.current;
-    if (el) {
-      el.style.setProperty('--rx', `${rx}deg`);
-      el.style.setProperty('--ry', `${ry}deg`);
-      el.style.setProperty('--gx', `${gx}%`);
-      el.style.setProperty('--gy', `${gy}%`);
-      el.style.setProperty('--tr', '0.35s cubic-bezier(0.16, 1, 0.3, 1)');
-      el.style.setProperty('--o', '0.25');
-    }
+    rxRef.current = -yPct * 25;
+    ryRef.current = xPct * 25;
+    gxRef.current = (touchX / rect.width) * 100;
+    gyRef.current = (touchY / rect.height) * 100;
+    trRef.current = '0.35s cubic-bezier(0.16, 1, 0.3, 1)';
+    oRef.current = '0.25';
+    scheduleUpdate();
   };
 
   const handleTouchStart = () => {
     if (gyroActive) return;
     if (cardRef.current) {
       rectRef.current = cardRef.current.getBoundingClientRect();
-      cardRef.current.style.setProperty('--o', '0.25');
     }
+    oRef.current = '0.25';
+    scheduleUpdate();
   };
 
   const handleTouchEnd = () => {
     if (gyroActive) return;
-    const el = cardRef.current;
-    if (el) {
-      el.style.setProperty('--rx', '0deg');
-      el.style.setProperty('--ry', '0deg');
-      el.style.setProperty('--gx', '50%');
-      el.style.setProperty('--gy', '50%');
-      el.style.setProperty('--tr', '0.8s cubic-bezier(0.16, 1, 0.3, 1)');
-      el.style.setProperty('--o', '0');
-    }
+    rxRef.current = 0;
+    ryRef.current = 0;
+    gxRef.current = 50;
+    gyRef.current = 50;
+    trRef.current = '0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+    oRef.current = '0';
     rectRef.current = null;
+    scheduleUpdate();
   };
 
   // Gyroscope Sensor orientation hook
@@ -151,11 +169,9 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       return;
     }
 
-    // Reset baseline calibration on activate
     initialOrientation.current = null;
 
     const handleOrientationChange = () => {
-      // Force recalibration when screen is rotated
       initialOrientation.current = null;
     };
 
@@ -163,7 +179,6 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       let { beta, gamma } = e;
       if (beta === null || gamma === null) return;
 
-      // Dynamically calibrate to whatever angle the user is currently holding the phone
       if (!initialOrientation.current) {
         initialOrientation.current = { beta, gamma };
         return;
@@ -172,7 +187,6 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       const betaDiff = Math.max(-25, Math.min(25, beta - initialOrientation.current.beta));
       const gammaDiff = Math.max(-25, Math.min(25, gamma - initialOrientation.current.gamma));
 
-      // Detect screen orientation angle dynamically to swap axes in landscape mode
       const screenAngle = typeof window !== "undefined"
         ? (window.orientation || 
            (window.screen && window.screen.orientation && window.screen.orientation.angle) || 
@@ -184,49 +198,39 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       let gx = 50;
       let gy = 50;
 
-      // Map gyroscope tilt delta to 3D rotation based on actual physical device rotation
       if (screenAngle === 90) {
-        // Landscape Left
         rx = -(gammaDiff / 25) * 25;
         ry = -(betaDiff / 25) * 25;
         gx = 50 - (gammaDiff / 25) * 50;
         gy = 50 - (betaDiff / 25) * 50;
       } else if (screenAngle === -90 || screenAngle === 270) {
-        // Landscape Right
         rx = (gammaDiff / 25) * 25;
         ry = (betaDiff / 25) * 25;
         gx = 50 + (gammaDiff / 25) * 50;
         gy = 50 + (betaDiff / 25) * 50;
       } else if (screenAngle === 180) {
-        // Portrait Upside Down
         rx = (betaDiff / 25) * 25;
         ry = -(gammaDiff / 25) * 25;
         gx = 50 - (gammaDiff / 25) * 50;
         gy = 50 - (betaDiff / 25) * 50;
       } else {
-        // Portrait Normal (0deg)
         rx = -(betaDiff / 25) * 25;
         ry = (gammaDiff / 25) * 25;
         gx = 50 + (gammaDiff / 25) * 50;
         gy = 50 + (betaDiff / 25) * 50;
       }
 
-      const el = cardRef.current;
-      if (el) {
-        el.style.setProperty('--rx', `${rx}deg`);
-        el.style.setProperty('--ry', `${ry}deg`);
-        el.style.setProperty('--gx', `${gx}%`);
-        el.style.setProperty('--gy', `${gy}%`);
-        // Smooth transition for gyroscope to feel organic
-        el.style.setProperty('--tr', '0.15s cubic-bezier(0.25, 1, 0.5, 1)');
-        el.style.setProperty('--o', '0.25');
-      }
+      rxRef.current = rx;
+      ryRef.current = ry;
+      gxRef.current = gx;
+      gyRef.current = gy;
+      trRef.current = '0.15s cubic-bezier(0.25, 1, 0.5, 1)';
+      oRef.current = '0.25';
+      scheduleUpdate();
     };
 
-    const el = cardRef.current;
-    if (el) {
-      el.style.setProperty('--o', '0.25');
-    }
+    oRef.current = '0.25';
+    scheduleUpdate();
 
     window.addEventListener("deviceorientation", handleOrientation);
     window.addEventListener("orientationchange", handleOrientationChange);
@@ -247,17 +251,15 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
   }, [gyroActive]);
 
   const toggleGyroscope = async () => {
-    const el = cardRef.current;
     if (gyroActive) {
       setGyroActive(false);
-      if (el) {
-        el.style.setProperty('--rx', '0deg');
-        el.style.setProperty('--ry', '0deg');
-        el.style.setProperty('--gx', '50%');
-        el.style.setProperty('--gy', '50%');
-        el.style.setProperty('--tr', '0.6s cubic-bezier(0.25, 1, 0.3, 1)');
-        el.style.setProperty('--o', '0');
-      }
+      rxRef.current = 0;
+      ryRef.current = 0;
+      gxRef.current = 50;
+      gyRef.current = 50;
+      trRef.current = '0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+      oRef.current = '0';
+      scheduleUpdate();
       return;
     }
 

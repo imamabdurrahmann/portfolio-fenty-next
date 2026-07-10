@@ -1,10 +1,39 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 
 export default function HoverImageReveal({ children, img, className = "" }: { children: React.ReactNode, img: string, className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const rectRef = useRef<DOMRect | null>(null);
+  const rafId = useRef<number | null>(null);
+
+  // Cache coordinates to write to DOM on next animation frame
+  const mxRef = useRef(0);
+  const myRef = useRef(0);
+
+  const updateDOM = () => {
+    const el = ref.current;
+    if (el) {
+      el.style.setProperty('--mx', `${mxRef.current}px`);
+      el.style.setProperty('--my', `${myRef.current}px`);
+    }
+    rafId.current = null;
+  };
+
+  const scheduleUpdate = () => {
+    if (rafId.current === null) {
+      rafId.current = requestAnimationFrame(updateDOM);
+    }
+  };
+
+  // Cleanup pending rAF on unmount
+  useEffect(() => {
+    return () => {
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
+  }, []);
 
   const handleMouseEnter = () => {
     if (ref.current) {
@@ -25,17 +54,17 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
       el.style.setProperty('--tro', '0.3s ease-in');
     }
     rectRef.current = null;
+    if (rafId.current !== null) {
+      cancelAnimationFrame(rafId.current);
+      rafId.current = null;
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!rectRef.current) return;
-    const mx = e.clientX - rectRef.current.left;
-    const my = e.clientY - rectRef.current.top;
-    const el = ref.current;
-    if (el) {
-      el.style.setProperty('--mx', `${mx}px`);
-      el.style.setProperty('--my', `${my}px`);
-    }
+    mxRef.current = e.clientX - rectRef.current.left;
+    myRef.current = e.clientY - rectRef.current.top;
+    scheduleUpdate();
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -62,18 +91,18 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
       el.style.setProperty('--tro', '0.3s ease-in');
     }
     rectRef.current = null;
+    if (rafId.current !== null) {
+      cancelAnimationFrame(rafId.current);
+      rafId.current = null;
+    }
   };
 
   const updateTouchCoords = (e: React.TouchEvent) => {
     if (!rectRef.current || e.touches.length === 0) return;
     const touch = e.touches[0];
-    const mx = touch.clientX - rectRef.current.left;
-    const my = touch.clientY - rectRef.current.top;
-    const el = ref.current;
-    if (el) {
-      el.style.setProperty('--mx', `${mx}px`);
-      el.style.setProperty('--my', `${my}px`);
-    }
+    mxRef.current = touch.clientX - rectRef.current.left;
+    myRef.current = touch.clientY - rectRef.current.top;
+    scheduleUpdate();
   };
 
   return (

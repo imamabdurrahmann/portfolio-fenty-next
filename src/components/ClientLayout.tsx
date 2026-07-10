@@ -20,6 +20,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   // Cursor state
   const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
   const [cursorType, setCursorType] = useState<'default'|'hover'|'view'>('default');
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // Scroll Progress
   const { scrollYProgress } = useScroll();
@@ -49,8 +50,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       }
     };
 
-    window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mouseover", handleMouseOver);
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    setIsTouchDevice(isTouch);
+
+    if (!isTouch) {
+      window.addEventListener("mousemove", moveCursor);
+      window.addEventListener("mouseover", handleMouseOver);
+    }
 
     const handleScroll = () => {
       const nav = document.getElementById("nav");
@@ -60,8 +66,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("mouseover", handleMouseOver);
+      if (!isTouch) {
+        window.removeEventListener("mousemove", moveCursor);
+        window.removeEventListener("mouseover", handleMouseOver);
+      }
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
@@ -108,44 +116,48 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       />
 
       {/* Framer Motion Cursor */}
-      <motion.div 
-        className="cursor-dot"
-        animate={{ x: mousePosition.x, y: mousePosition.y }}
-        transition={{ type: "tween", ease: "linear", duration: 0 }}
-        style={{ translateX: "-50%", translateY: "-50%" }}
-      ></motion.div>
-      <motion.div 
-        className="cursor-outline"
-        animate={{ 
-          x: mousePosition.x, 
-          y: mousePosition.y,
-          scale: cursorType === 'view' ? 2.5 : (cursorType === 'hover' ? 1.5 : 1),
-          backgroundColor: cursorType === 'view' ? "#fff" : (cursorType === 'hover' ? "rgba(255, 255, 255, 0.1)" : "transparent"),
-          borderColor: cursorType !== 'default' ? "#fff" : "rgba(255, 255, 255, 0.5)"
-        }}
-        transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
-        style={{ translateX: "-50%", translateY: "-50%", display: "flex", alignItems: "center", justifyContent: "center" }}
-      >
-        <AnimatePresence>
-          {cursorType === 'view' && (
-            <motion.span 
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              style={{ 
-                fontSize: '6px', 
-                color: '#000', 
-                fontFamily: 'var(--font-label)',
-                fontWeight: 700, 
-                letterSpacing: '1px',
-                position: 'absolute'
-              }}
-            >
-              VIEW
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </motion.div>
+      {!isTouchDevice && (
+        <>
+          <motion.div 
+            className="cursor-dot"
+            animate={{ x: mousePosition.x, y: mousePosition.y }}
+            transition={{ type: "tween", ease: "linear", duration: 0 }}
+            style={{ translateX: "-50%", translateY: "-50%" }}
+          ></motion.div>
+          <motion.div 
+            className="cursor-outline"
+            animate={{ 
+              x: mousePosition.x, 
+              y: mousePosition.y,
+              scale: cursorType === 'view' ? 2.5 : (cursorType === 'hover' ? 1.5 : 1),
+              backgroundColor: cursorType === 'view' ? "#fff" : (cursorType === 'hover' ? "rgba(255, 255, 255, 0.1)" : "transparent"),
+              borderColor: cursorType !== 'default' ? "#fff" : "rgba(255, 255, 255, 0.5)"
+            }}
+            transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.5 }}
+            style={{ translateX: "-50%", translateY: "-50%", display: "flex", alignItems: "center", justifyContent: "center" }}
+          >
+            <AnimatePresence>
+              {cursorType === 'view' && (
+                <motion.span 
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.5 }}
+                  style={{ 
+                    fontSize: '6px', 
+                    color: '#000', 
+                    fontFamily: 'var(--font-label)',
+                    fontWeight: 700, 
+                    letterSpacing: '1px',
+                    position: 'absolute'
+                  }}
+                >
+                  VIEW
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </motion.div>
+        </>
+      )}
 
       <div className="loader" id="loader">
         <div className="loader-name">

@@ -9,6 +9,10 @@ export default function LenisScroll() {
   useEffect(() => {
     if (pathname === '/cv') return;
 
+    // Disable smooth scroll library on touch devices to allow native OS-level momentum scroll
+    const isTouch = window.matchMedia("(pointer: coarse)").matches;
+    if (isTouch) return;
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -16,7 +20,6 @@ export default function LenisScroll() {
       gestureOrientation: 'vertical',
       smoothWheel: true,
       wheelMultiplier: 1,
-      touchMultiplier: 2,
     });
 
     function raf(time: number) {

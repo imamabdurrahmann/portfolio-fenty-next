@@ -16,6 +16,27 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
     y.set(e.clientY - rect.top);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setIsHovered(true);
+    updateTouchCoords(e);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    updateTouchCoords(e);
+  };
+
+  const handleTouchEnd = () => {
+    setIsHovered(false);
+  };
+
+  const updateTouchCoords = (e: React.TouchEvent) => {
+    if (!ref.current || e.touches.length === 0) return;
+    const touch = e.touches[0];
+    const rect = ref.current.getBoundingClientRect();
+    x.set(touch.clientX - rect.left);
+    y.set(touch.clientY - rect.top);
+  };
+
   return (
     <div 
       ref={ref}
@@ -23,6 +44,10 @@ export default function HoverImageReveal({ children, img, className = "" }: { ch
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onMouseMove={handleMouseMove}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
       style={{ position: "relative" }}
     >
       {children}

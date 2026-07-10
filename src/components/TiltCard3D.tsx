@@ -13,17 +13,19 @@ interface TiltCard3DProps {
 export default function TiltCard3D({ title, category, description, imgSrc, badge }: TiltCard3DProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const rectRef = useRef<DOMRect | null>(null);
+  const initialOrientation = useRef<{ beta: number; gamma: number } | null>(null);
   const [gyroActive, setGyroActive] = useState(false);
   const [supportGyro, setSupportGyro] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
 
-  // Detect iOS and gyroscope availability on mount
+  // Detect iOS and gyroscope availability on mount (only for touch-capable devices)
   useEffect(() => {
     if (typeof window !== "undefined") {
       const ios = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
       setIsIOS(ios);
 
-      if (window.DeviceOrientationEvent) {
+      const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+      if (window.DeviceOrientationEvent && hasTouch) {
         setSupportGyro(true);
       }
     }
@@ -144,15 +146,26 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
 
   // Gyroscope Sensor orientation hook
   useEffect(() => {
-    if (!gyroActive) return;
+    if (!gyroActive) {
+      initialOrientation.current = null;
+      return;
+    }
+
+    // Reset baseline calibration on activate
+    initialOrientation.current = null;
 
     const handleOrientation = (e: DeviceOrientationEvent) => {
       let { beta, gamma } = e;
       if (beta === null || gamma === null) return;
 
-      const targetBeta = 50; // default holding angle
-      const betaDiff = Math.max(-25, Math.min(25, beta - targetBeta));
-      const gammaDiff = Math.max(-25, Math.min(25, gamma));
+      // Dynamically calibrate to whatever angle the user is currently holding the phone
+      if (!initialOrientation.current) {
+        initialOrientation.current = { beta, gamma };
+        return;
+      }
+
+      const betaDiff = Math.max(-25, Math.min(25, beta - initialOrientation.current.beta));
+      const gammaDiff = Math.max(-25, Math.min(25, gamma - initialOrientation.current.gamma));
 
       const rx = -(betaDiff / 25) * 25;
       const ry = (gammaDiff / 25) * 25;
@@ -179,6 +192,7 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
     window.addEventListener("deviceorientation", handleOrientation);
     return () => {
       window.removeEventListener("deviceorientation", handleOrientation);
+      initialOrientation.current = null;
     };
   }, [gyroActive]);
 

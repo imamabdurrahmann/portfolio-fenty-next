@@ -154,6 +154,11 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
     // Reset baseline calibration on activate
     initialOrientation.current = null;
 
+    const handleOrientationChange = () => {
+      // Force recalibration when screen is rotated
+      initialOrientation.current = null;
+    };
+
     const handleOrientation = (e: DeviceOrientationEvent) => {
       let { beta, gamma } = e;
       if (beta === null || gamma === null) return;
@@ -167,10 +172,44 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
       const betaDiff = Math.max(-25, Math.min(25, beta - initialOrientation.current.beta));
       const gammaDiff = Math.max(-25, Math.min(25, gamma - initialOrientation.current.gamma));
 
-      const rx = -(betaDiff / 25) * 25;
-      const ry = (gammaDiff / 25) * 25;
-      const gx = 50 + (gammaDiff / 25) * 50;
-      const gy = 50 + (betaDiff / 25) * 50;
+      // Detect screen orientation angle dynamically to swap axes in landscape mode
+      const screenAngle = typeof window !== "undefined"
+        ? (window.orientation || 
+           (window.screen && window.screen.orientation && window.screen.orientation.angle) || 
+           0)
+        : 0;
+
+      let rx = 0;
+      let ry = 0;
+      let gx = 50;
+      let gy = 50;
+
+      // Map gyroscope tilt delta to 3D rotation based on actual physical device rotation
+      if (screenAngle === 90) {
+        // Landscape Left
+        rx = -(gammaDiff / 25) * 25;
+        ry = -(betaDiff / 25) * 25;
+        gx = 50 - (gammaDiff / 25) * 50;
+        gy = 50 - (betaDiff / 25) * 50;
+      } else if (screenAngle === -90 || screenAngle === 270) {
+        // Landscape Right
+        rx = (gammaDiff / 25) * 25;
+        ry = (betaDiff / 25) * 25;
+        gx = 50 + (gammaDiff / 25) * 50;
+        gy = 50 + (betaDiff / 25) * 50;
+      } else if (screenAngle === 180) {
+        // Portrait Upside Down
+        rx = (betaDiff / 25) * 25;
+        ry = -(gammaDiff / 25) * 25;
+        gx = 50 - (gammaDiff / 25) * 50;
+        gy = 50 - (betaDiff / 25) * 50;
+      } else {
+        // Portrait Normal (0deg)
+        rx = -(betaDiff / 25) * 25;
+        ry = (gammaDiff / 25) * 25;
+        gx = 50 + (gammaDiff / 25) * 50;
+        gy = 50 + (betaDiff / 25) * 50;
+      }
 
       const el = cardRef.current;
       if (el) {
@@ -190,8 +229,19 @@ export default function TiltCard3D({ title, category, description, imgSrc, badge
     }
 
     window.addEventListener("deviceorientation", handleOrientation);
+    window.addEventListener("orientationchange", handleOrientationChange);
+    
+    const screenOrientation = window.screen && window.screen.orientation;
+    if (screenOrientation && screenOrientation.addEventListener) {
+      screenOrientation.addEventListener("change", handleOrientationChange);
+    }
+
     return () => {
       window.removeEventListener("deviceorientation", handleOrientation);
+      window.removeEventListener("orientationchange", handleOrientationChange);
+      if (screenOrientation && screenOrientation.removeEventListener) {
+        screenOrientation.removeEventListener("change", handleOrientationChange);
+      }
       initialOrientation.current = null;
     };
   }, [gyroActive]);
